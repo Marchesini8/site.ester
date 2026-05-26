@@ -38,6 +38,8 @@
         s.parentNode.insertBefore(t, s);
       })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
       fbq("init", "1002260965659482");
+      window.__metaPageViewEventId = `PageView.${Date.now()}.${Math.random().toString(16).slice(2)}`;
+      fbq("track", "PageView", {}, { eventID: window.__metaPageViewEventId });
     </script>
     <noscript>
       <img

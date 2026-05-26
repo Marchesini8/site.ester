@@ -222,7 +222,7 @@ function trackMetaEvent(eventName, params = {}, options = {}) {
   const eventId = options.eventId || createEventId(eventName);
   const customer = options.customer || latestCustomerData || {};
 
-  if (typeof window.fbq === "function") {
+  if (!options.skipBrowser && typeof window.fbq === "function") {
     window.fbq("track", eventName, params, { eventID: eventId });
   }
 
@@ -482,7 +482,7 @@ promoToggle?.addEventListener("click", () => {
   planList?.classList.toggle("is-collapsed", isExpanded);
 });
 
-trackMetaEvent("PageView");
+trackMetaEvent("PageView", {}, { eventId: window.__metaPageViewEventId, skipBrowser: true });
 trackMetaEvent("ViewContent", getPixelProductParams());
 restoreActiveOrder();
 
