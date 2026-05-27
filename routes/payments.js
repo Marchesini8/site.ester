@@ -8,19 +8,23 @@ const router = express.Router();
 const SUBSCRIPTION_PLANS = {
   "15d": {
     label: "15 Dias",
-    price: 9.9,
+    price: 17.99,
   },
   "30d": {
     label: "30 Dias",
-    price: 14.9,
+    price: 62.9,
   },
   "3m": {
     label: "3 Meses",
-    price: 32.9,
+    price: 75.9,
   },
   "6m": {
     label: "6 Meses",
-    price: 24.9,
+    price: 87.9,
+  },
+  "upsell-6m": {
+    label: "6 Meses",
+    price: 19.9,
   },
 };
 

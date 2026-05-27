@@ -35,6 +35,7 @@ router.get("/:orderId/status", async (req, res) => {
     id: order.id,
     status: order.status,
     isPaid: order.isPaid,
+    item: order.item,
     deliveryPreference: order.deliveryPreference,
     deliveryAttempts: order.deliveryAttempts,
   });

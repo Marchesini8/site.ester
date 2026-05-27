@@ -10,6 +10,8 @@ const bioText = document.querySelector("#bioText");
 const bioToggle = document.querySelector("#bioToggle");
 const previewVideos = document.querySelectorAll(".content-preview video");
 const checkoutForm = document.querySelector("#checkout-form");
+const checkoutNameInput = checkoutForm?.querySelector('input[name="name"]');
+const checkoutEmailInput = checkoutForm?.querySelector('input[name="email"]');
 const paymentFeedback = document.querySelector("#payment-feedback");
 const pixResult = document.querySelector("#pix-result");
 const pixQrImage = document.querySelector("#pix-qr-image");
@@ -21,6 +23,10 @@ const deliveryStatus = document.querySelector("#delivery-status");
 const purchaseToast = document.querySelector("#purchase-toast");
 const purchaseToastName = document.querySelector("#purchase-toast-name");
 const purchaseToastClose = document.querySelector(".toast-close");
+const upsellModal = document.querySelector("#upsell-modal");
+const upsellModalCloseButtons = document.querySelectorAll("#upsell-modal .modal-close");
+const upsellAcceptButton = document.querySelector(".upsell-accept");
+const upsellDeclineButton = document.querySelector(".upsell-decline");
 const selectedPlanIdInput = document.querySelector("#selected-plan-id");
 const selectedPlanLabel = document.querySelector("#selected-plan-label");
 const selectedPlanPrice = document.querySelector("#selected-plan-price");
@@ -35,15 +41,17 @@ let addToCartTracked = false;
 let leadTracked = false;
 let purchaseTracked = false;
 let latestCustomerData = null;
+let latestOrderItem = null;
 let selectedPlan = {
   id: "15d",
   label: "15 Dias",
-  price: 9.9,
+  price: 17.99,
 };
 
 const activeOrderStorageKey = "active_order";
 const externalIdCookieName = "site_external_id";
 const trackingStorageKey = "checkout_tracking";
+const upsellStoragePrefix = "upsell_seen_";
 const purchaseToastMessages = [
   "Gabriel acabou de assinar o acesso premium",
   "Carlos Eduardo Oliveira acabou de assinar",
@@ -300,6 +308,10 @@ function restoreActiveOrder() {
     currentOrderId = saved.orderId;
     currentTransactionHash = saved.transactionHash || null;
     latestCustomerData = saved.customer || null;
+    latestOrderItem = saved.item || null;
+    if (saved.item?.id && saved.item?.label) {
+      updateSelectedPlan(saved.item);
+    }
     if (saved.pixCode && pixCode) pixCode.value = saved.pixCode;
 
     if (saved.pixCode && pixQrImage && pixQrEmpty) {
@@ -367,14 +379,44 @@ function updateSelectedPlan(plan = {}) {
   resetSubmitButton(submitPaymentButton);
 }
 
-function openCheckout(sourceButton) {
+function prefillCheckoutForm() {
+  if (checkoutNameInput && latestCustomerData?.name) {
+    checkoutNameInput.value = latestCustomerData.name;
+  }
+
+  if (checkoutEmailInput && latestCustomerData?.email) {
+    checkoutEmailInput.value = latestCustomerData.email;
+  }
+}
+
+function resetCheckoutInteraction() {
+  hidePixResult({ clearCode: true });
+  setFeedback("");
+  if (deliveryStatus) deliveryStatus.textContent = "";
+}
+
+function openCheckout(sourceButton, options = {}) {
+  const { fresh = false } = options;
+
   if (sourceButton?.dataset?.planId) {
     updateSelectedPlan(sourceButton);
+  } else if (sourceButton?.id && sourceButton?.label && typeof sourceButton?.price !== "undefined") {
+    updateSelectedPlan(sourceButton);
+  }
+
+  if (fresh) {
+    currentOrderId = null;
+    currentTransactionHash = null;
+    clearActiveOrder();
+    checkoutForm?.reset();
+    updateSelectedPlan(selectedPlan);
+    resetCheckoutInteraction();
   }
 
   checkoutModal?.classList.add("is-open");
   checkoutModal?.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+  prefillCheckoutForm();
 
   if (!checkoutTracked) {
     trackMetaEvent("InitiateCheckout", getPixelProductParams());
@@ -391,6 +433,48 @@ function openCheckout(sourceButton) {
     hidePixResult();
     deliveryStatus.textContent = "";
   }
+}
+
+function getUpsellStorageKey(orderId) {
+  return `${upsellStoragePrefix}${orderId}`;
+}
+
+function hasShownUpsell(orderId) {
+  if (!orderId) return false;
+
+  try {
+    return window.localStorage.getItem(getUpsellStorageKey(orderId)) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markUpsellShown(orderId) {
+  if (!orderId) return;
+
+  try {
+    window.localStorage.setItem(getUpsellStorageKey(orderId), "1");
+  } catch {
+    // Ignore storage failures and let the in-memory flow continue.
+  }
+}
+
+function showUpsellOffer(order) {
+  if (!upsellModal || !order?.id || !order?.isPaid) return;
+
+  const planId = order.item?.planId || selectedPlan.id;
+  if (planId !== "15d" || hasShownUpsell(order.id)) return;
+
+  markUpsellShown(order.id);
+  upsellModal.classList.add("is-open");
+  upsellModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeUpsellOffer() {
+  upsellModal?.classList.remove("is-open");
+  upsellModal?.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
 }
 
 function closeCheckout() {
@@ -475,6 +559,7 @@ async function checkOrderStatus() {
   if (data.isPaid) {
     window.clearInterval(pollTimer);
     pollTimer = null;
+    latestOrderItem = data.item || latestOrderItem;
 
     deliveryStatus.innerHTML = `
       <div class="download-ready">
@@ -491,6 +576,11 @@ async function checkOrderStatus() {
     }
     clearActiveOrder();
     setFeedback("Pagamento confirmado. Seu acesso foi liberado.", "success");
+    showUpsellOffer({
+      id: currentOrderId,
+      isPaid: true,
+      item: latestOrderItem || data.item || {},
+    });
     return;
   }
 
@@ -548,6 +638,21 @@ purchaseToastClose?.addEventListener("click", () => {
   purchaseToast?.classList.remove("is-visible");
 });
 
+upsellModalCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeUpsellOffer);
+});
+
+upsellDeclineButton?.addEventListener("click", closeUpsellOffer);
+
+upsellAcceptButton?.addEventListener("click", () => {
+  closeUpsellOffer();
+  openCheckout({
+    id: "upsell-6m",
+    label: "6 Meses",
+    price: 19.9,
+  }, { fresh: true });
+});
+
 openCheckoutButtons.forEach((button) => button.addEventListener("click", () => openCheckout(button)));
 closeModalButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -559,8 +664,16 @@ checkoutModal?.addEventListener("click", (event) => {
   if (event.target === checkoutModal) closeCheckout();
 });
 
+upsellModal?.addEventListener("click", (event) => {
+  if (event.target === upsellModal) closeUpsellOffer();
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    if (upsellModal?.classList.contains("is-open")) {
+      closeUpsellOffer();
+      return;
+    }
     closeCheckout();
   }
 });
@@ -572,6 +685,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
   const formData = new FormData(checkoutForm);
   const payload = Object.fromEntries(formData.entries());
   latestCustomerData = {
+    name: payload.name,
     email: payload.email,
   };
 
@@ -611,6 +725,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
       orderId: currentOrderId,
       transactionHash: currentTransactionHash,
       customer: latestCustomerData,
+      item: { ...selectedPlan },
       pixCode: data.pix_code || "",
       pixBase64: data.pix_base64 || "",
     });

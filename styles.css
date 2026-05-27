@@ -395,9 +395,25 @@ video {
 .hero-plan span {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 6px 8px;
+  flex-wrap: wrap;
+  text-align: right;
   font-size: 1.18rem;
+  line-height: 1.05;
   font-weight: 900;
+}
+
+.price-old {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.74em;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.price-new {
+  font-size: 1em;
+  white-space: nowrap;
 }
 
 .bonus-pill {
@@ -780,6 +796,63 @@ video {
   background: #fff;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
   animation: modalIn 0.24s ease-out;
+}
+
+#upsell-modal {
+  z-index: 10020;
+}
+
+.upsell-card {
+  padding-bottom: 18px;
+}
+
+.upsell-header {
+  display: grid;
+  gap: 10px;
+  padding: 26px 18px 4px;
+}
+
+.upsell-header h2 {
+  margin: 0;
+  color: #1c2230;
+  font-size: 1.28rem;
+  line-height: 1.14;
+}
+
+.upsell-header p {
+  margin: 0;
+  color: #555d69;
+  line-height: 1.5;
+}
+
+.upsell-benefit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #ebedf2;
+  border-radius: 10px;
+  background: #f8f9fb;
+  color: #222831;
+  font-weight: 750;
+}
+
+.upsell-benefit.highlight {
+  border-color: rgba(255, 107, 42, 0.24);
+  background: #fff5ef;
+  color: #b34f1f;
+}
+
+.upsell-benefit span {
+  font-weight: 950;
+}
+
+.upsell-actions {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px 0;
 }
 
 .modal-close {

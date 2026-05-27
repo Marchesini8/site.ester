@@ -124,10 +124,14 @@
               type="button"
               data-plan-id="15d"
               data-plan-label="15 Dias"
-              data-plan-price="9.90"
+              data-plan-price="17.99"
             >
               <strong>15 Dias</strong>
-              <span>R$ 9,90 <i class="fas fa-arrow-right"></i></span>
+              <span>
+                <del class="price-old">R$ 45,90</del>
+                <strong class="price-new">R$ 17,99</strong>
+                <i class="fas fa-arrow-right"></i>
+              </span>
             </button>
 
             <div class="bonus-pill">+ CHAMADA DE VÍDEO COMIGO HOJE!</div>
@@ -149,30 +153,30 @@
                 type="button"
                 data-plan-id="30d"
                 data-plan-label="30 Dias"
-                data-plan-price="14.90"
+                data-plan-price="62.90"
               >
                 <span class="plan-left">👑 <strong>30 Dias</strong> <em>Mais popular 🔥</em></span>
-                <strong>R$ 14,90</strong>
+                <strong>R$ 62,90</strong>
               </button>
               <button
                 class="plan-option open-checkout"
                 type="button"
                 data-plan-id="3m"
                 data-plan-label="3 Meses"
-                data-plan-price="32.90"
+                data-plan-price="75.90"
               >
                 <span class="plan-left"><strong>3 Meses</strong> <em>Melhor oferta</em></span>
-                <strong>R$ 32,90</strong>
+                <strong>R$ 75,90</strong>
               </button>
               <button
                 class="plan-option open-checkout"
                 type="button"
                 data-plan-id="6m"
                 data-plan-label="6 Meses"
-                data-plan-price="24.90"
+                data-plan-price="87.90"
               >
                 <span class="plan-left"><strong>6 Meses</strong> <em class="blue">Exclusivo</em></span>
-                <strong>R$ 24,90</strong>
+                <strong>R$ 87,90</strong>
               </button>
             </div>
           </section>
@@ -286,7 +290,7 @@
           <div>
             <span class="eyebrow">Checkout seguro via Pix</span>
             <h2 id="checkout-title">Assinar Nicolle Caroline</h2>
-            <p><span id="selected-plan-label">15 Dias</span> por <strong id="selected-plan-price">R$ 9,90</strong></p>
+            <p><span id="selected-plan-label">15 Dias</span> por <strong id="selected-plan-price">R$ 17,99</strong></p>
           </div>
         </div>
 
@@ -301,7 +305,7 @@
             <input name="email" type="email" autocomplete="email" required placeholder="voce@email.com" />
           </label>
           <input type="hidden" name="deliveryPreference" value="email" />
-          <button class="button full submit-payment" type="submit">Gerar Pix de R$ 9,90</button>
+          <button class="button full submit-payment" type="submit">Gerar Pix de R$ 17,99</button>
           <p class="form-feedback" id="payment-feedback" role="status"></p>
         </form>
 
@@ -320,6 +324,32 @@
           </div>
           <div class="delivery-status" id="delivery-status" role="status"></div>
         </section>
+      </div>
+    </div>
+
+    <div class="modal" id="upsell-modal" aria-hidden="true">
+      <div class="modal-card upsell-card" role="dialog" aria-modal="true" aria-labelledby="upsell-title">
+        <button class="modal-close" aria-label="Fechar">Ã—</button>
+        <div class="upsell-header">
+          <span class="eyebrow">Oferta liberada apos a compra</span>
+          <h2 id="upsell-title">Leve 6 meses por + R$ 19,90</h2>
+          <p>
+            Acabou de finalizar seu acesso inicial. Liberamos um upgrade exclusivo com 6 meses adicionais por
+            apenas mais R$ 19,90.
+          </p>
+        </div>
+        <div class="upsell-benefit">
+          <strong>Antes:</strong>
+          <span>R$ 87,90</span>
+        </div>
+        <div class="upsell-benefit highlight">
+          <strong>Agora:</strong>
+          <span>+ R$ 19,90</span>
+        </div>
+        <div class="upsell-actions">
+          <button class="button full upsell-accept" type="button">Quero o upgrade</button>
+          <button class="button ghost full upsell-decline" type="button">Agora nao</button>
+        </div>
       </div>
     </div>
 
