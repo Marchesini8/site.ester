@@ -36,8 +36,20 @@ function extractTransactionHash(data) {
   return (
     data.transaction_hash ||
     data.transactionHash ||
+    data.hash ||
+    data.id ||
     data.pix?.transaction_hash ||
     data.pix?.transactionHash ||
+    data.pix?.hash ||
+    data.pix?.id ||
+    data.transaction?.transaction_hash ||
+    data.transaction?.transactionHash ||
+    data.transaction?.hash ||
+    data.transaction?.id ||
+    data.payment?.transaction_hash ||
+    data.payment?.transactionHash ||
+    data.payment?.hash ||
+    data.payment?.id ||
     null
   );
 }

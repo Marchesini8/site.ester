@@ -4,7 +4,9 @@ const path = require("path");
 
 const ordersById = new Map();
 const ordersByTransaction = new Map();
-const storagePath = path.resolve(process.env.ORDER_STORE_FILE || path.join("outputs", "orders.json"));
+const storagePath = process.env.ORDER_STORE_FILE
+  ? path.resolve(process.env.ORDER_STORE_FILE)
+  : path.join(__dirname, "..", "outputs", "orders.json");
 
 function ensureStorageDir() {
   fs.mkdirSync(path.dirname(storagePath), { recursive: true });

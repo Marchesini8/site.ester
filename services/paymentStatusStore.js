@@ -2,7 +2,9 @@ const fs = require("fs");
 const path = require("path");
 
 const payments = new Map();
-const storagePath = path.resolve(process.env.PAYMENT_STATUS_FILE || path.join("outputs", "payments.json"));
+const storagePath = process.env.PAYMENT_STATUS_FILE
+  ? path.resolve(process.env.PAYMENT_STATUS_FILE)
+  : path.join(__dirname, "..", "outputs", "payments.json");
 
 function ensureStorageDir() {
   fs.mkdirSync(path.dirname(storagePath), { recursive: true });
