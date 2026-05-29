@@ -108,11 +108,6 @@ function getMetaDestinations() {
       pixelId: process.env.META_PIXEL_ID,
       accessToken: process.env.META_ACCESS_TOKEN,
     },
-    {
-      label: "secondary",
-      pixelId: process.env.META_SECOND_PIXEL_ID,
-      accessToken: process.env.META_SECOND_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN,
-    },
   ];
   const seenPixelIds = new Set();
 
@@ -194,22 +189,11 @@ async function sendEvent(req, payload) {
   }
 
   const event = buildEvent(req, payload);
-  const [primaryDestination, ...secondaryDestinations] = destinations;
-  const primaryResult = await sendEventToDestination(primaryDestination, event);
-  const secondaryResults = await Promise.allSettled(
-    secondaryDestinations.map((destination) => sendEventToDestination(destination, event))
-  );
-  const successfulSecondaryResults = secondaryResults
-    .filter((result) => result.status === "fulfilled")
-    .map((result) => result.value);
-  const failedSecondaryResults = secondaryResults
-    .filter((result) => result.status === "rejected")
-    .map((result) => result.reason?.message || "Erro ao enviar evento para pixel secundario.");
-  const results = [primaryResult, ...successfulSecondaryResults];
+  const results = await Promise.all(destinations.map((destination) => sendEventToDestination(destination, event)));
 
   return {
     events_received: results.reduce((sum, result) => sum + Number(result.data?.events_received || 0), 0),
-    errors: failedSecondaryResults,
+    errors: [],
     results,
   };
 }
