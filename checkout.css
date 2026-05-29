@@ -494,6 +494,19 @@ textarea:focus {
   object-fit: contain;
 }
 
+.pre-pix-safe-strip {
+  width: 100%;
+  min-height: 84px;
+  margin: -10px 0 -2px;
+  padding: 10px 12px;
+  border: 1px solid rgba(230, 233, 239, 0.85);
+  box-shadow: 0 2px 8px rgba(21, 27, 43, 0.025);
+}
+
+.pre-pix-safe-strip.is-hidden {
+  display: none;
+}
+
 .generate-pix {
   position: sticky;
   bottom: 16px;
@@ -724,6 +737,16 @@ textarea:focus {
     min-height: 82px;
     margin: -2px 0 -4px;
     padding: 8px 4px;
+  }
+
+  .pre-pix-safe-strip {
+    min-height: 86px;
+    margin: 0 0 2px;
+    padding: 8px 8px;
+  }
+
+  .pre-pix-safe-strip img {
+    width: min(100%, 520px);
   }
 
   .bump-item {

@@ -6,6 +6,7 @@ const checkoutTotal = document.querySelector("#checkout-total");
 const addonInputs = document.querySelectorAll('input[name="addons"]');
 const checkoutFeedback = document.querySelector("#checkout-feedback");
 const generatePixButton = document.querySelector(".generate-pix");
+const prePixSafeStrip = document.querySelector(".pre-pix-safe-strip");
 const pixResultPage = document.querySelector("#pix-result-page");
 const checkoutPixQr = document.querySelector("#checkout-pix-qr");
 const checkoutPixEmpty = document.querySelector("#checkout-pix-empty");
@@ -356,6 +357,7 @@ function showPixResult(data = {}) {
 
   pixResultPage.hidden = false;
   generatePixButton?.classList.add("is-hidden");
+  prePixSafeStrip?.classList.add("is-hidden");
   window.requestAnimationFrame(() => {
     const pageTop = pixResultPage.getBoundingClientRect().top + window.scrollY;
     const targetTop = pageTop - window.innerHeight * 0.18;
@@ -423,6 +425,7 @@ addonInputs.forEach((input) => {
     updateTotal();
     pixResultPage.hidden = true;
     generatePixButton?.classList.remove("is-hidden");
+    prePixSafeStrip?.classList.remove("is-hidden");
     currentOrderId = null;
     currentTransactionHash = null;
     setFeedback("");
@@ -485,6 +488,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
   } catch (error) {
     setFeedback(error.message, "error");
     generatePixButton?.classList.remove("is-hidden");
+    prePixSafeStrip?.classList.remove("is-hidden");
   } finally {
     generatePixButton.disabled = false;
     updateTotal();
