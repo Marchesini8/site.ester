@@ -18,7 +18,7 @@ const plans = {
   "15d": {
     label: "Privacy Nicolle Caroline",
     period: "15 Dias",
-    price: 17.99,
+    price: 9.9,
   },
   "30d": {
     label: "30 Dias",
