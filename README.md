@@ -33,8 +33,8 @@ No Railway, configure as variaveis do `.env.example`, principalmente:
 - `IRONPAY_WEBHOOK_SECRET`
 - `META_PIXEL_ID`
 - `META_ACCESS_TOKEN`
-- `TIKTOK_PIXEL_CODE`
-- `TIKTOK_ACCESS_TOKEN`
+- `META_SECOND_PIXEL_ID`
+- `META_SECOND_ACCESS_TOKEN`
 
 ## Estrutura
 
@@ -42,4 +42,4 @@ No Railway, configure as variaveis do `.env.example`, principalmente:
 - `styles.css`: CSS do Site 18 + checkout Pix
 - `script.js`: checkout, pixel e acompanhamento de pagamento
 - `nicole-influencer.site/nicolle`: imagens, videos, fontes e CSS originais do webzip
-- `routes` e `services`: API Iron Pay, webhook, pedidos, Meta CAPI e TikTok Events API
+- `routes` e `services`: API Iron Pay, webhook, pedidos e Meta CAPI

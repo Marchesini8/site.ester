@@ -2,6 +2,8 @@ const crypto = require("crypto");
 
 const META_GRAPH_VERSION = process.env.META_GRAPH_VERSION || "v20.0";
 const META_CAPI_URL = `https://graph.facebook.com/${META_GRAPH_VERSION}`;
+const DEFAULT_PRIMARY_PIXEL_ID = "1002260965659482";
+const DEFAULT_SECOND_PIXEL_ID = "1499267518361019";
 const SUPPORTED_EVENTS = new Set([
   "PageView",
   "ViewContent",
@@ -105,8 +107,13 @@ function getMetaDestinations() {
   const destinations = [
     {
       label: "primary",
-      pixelId: process.env.META_PIXEL_ID,
+      pixelId: process.env.META_PIXEL_ID || DEFAULT_PRIMARY_PIXEL_ID,
       accessToken: process.env.META_ACCESS_TOKEN,
+    },
+    {
+      label: "second",
+      pixelId: process.env.META_SECOND_PIXEL_ID || DEFAULT_SECOND_PIXEL_ID,
+      accessToken: process.env.META_SECOND_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN,
     },
   ];
   const seenPixelIds = new Set();

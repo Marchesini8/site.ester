@@ -37,7 +37,7 @@ function persistOrders() {
 
 loadOrders();
 
-function createOrder({ customer, deliveryPreference, item, transactionHash, pixCode, adAttribution, metaAttribution }) {
+function createOrder({ customer, deliveryPreference, item, transactionHash, pixCode, metaAttribution }) {
   const id = crypto.randomUUID();
   const downloadToken = crypto.randomBytes(24).toString("hex");
   const order = {
@@ -49,7 +49,6 @@ function createOrder({ customer, deliveryPreference, item, transactionHash, pixC
     deliveryPreference,
     item,
     pixCode,
-    adAttribution: adAttribution || {},
     metaAttribution: metaAttribution || {},
     downloadToken,
     deliveryAttempts: [],
