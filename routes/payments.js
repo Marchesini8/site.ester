@@ -2,6 +2,7 @@ const express = require("express");
 const paymentService = require("../services/paymentService");
 const orderStore = require("../services/orderStore");
 const metaCapiService = require("../services/metaCapiService");
+const tiktokEventsService = require("../services/tiktokEventsService");
 
 const router = express.Router();
 const pendingCheckoutRequests = new Map();
@@ -66,6 +67,8 @@ function sanitizeAttribution(value = {}) {
   return {
     fbp: value.fbp || "",
     fbc: value.fbc || "",
+    ttp: value.ttp || "",
+    ttclid: value.ttclid || "",
     external_id: value.external_id || "",
     event_source_url: value.event_source_url || "",
   };
@@ -204,8 +207,16 @@ router.post("/checkout", async (req, res) => {
           transactionHash: payment.transaction_hash,
           pixCode: payment.pix_code,
           metaAttribution: {
-            ...attribution,
+            fbp: attribution.fbp,
+            fbc: attribution.fbc,
             external_id: attribution.external_id || metaCapiService.createExternalId(normalizedCustomer),
+            event_source_url: attribution.event_source_url,
+            client_ip_address: getIp(req),
+            client_user_agent: req.headers["user-agent"] || "",
+          },
+          adAttribution: {
+            ...attribution,
+            external_id: attribution.external_id || tiktokEventsService.createExternalId(normalizedCustomer),
             client_ip_address: getIp(req),
             client_user_agent: req.headers["user-agent"] || "",
           },

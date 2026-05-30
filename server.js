@@ -8,6 +8,7 @@ const paymentRoutes = require("./routes/payments");
 const webhookRoutes = require("./routes/webhooks");
 const orderRoutes = require("./routes/orders");
 const metaRoutes = require("./routes/meta");
+const tiktokRoutes = require("./routes/tiktok");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -42,6 +43,7 @@ app.use("/api/webhooks", webhookRoutes);
 app.use("/", webhookRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/meta", metaRoutes);
+app.use("/api/tiktok", tiktokRoutes);
 
 app.get("/health", (req, res) => {
   res.json({

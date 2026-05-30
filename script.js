@@ -47,7 +47,6 @@ let currentTransactionHash = null;
 let pollTimer = null;
 let checkoutTracked = false;
 let addToCartTracked = false;
-let leadTracked = false;
 let purchaseTracked = false;
 let latestCustomerData = null;
 let latestOrderItem = null;
@@ -341,7 +340,7 @@ function getPixelProductParams(plan = selectedPlan) {
   };
 }
 
-function getPurchasePixelParams() {
+function getPurchaseEventParams() {
   return {
     ...getPixelProductParams(),
     value: getCheckoutTotal(),
@@ -381,6 +380,24 @@ function getOrCreateFbp() {
   return fbp;
 }
 
+function captureTtclid() {
+  const ttclid = new URLSearchParams(window.location.search).get("ttclid");
+  if (!ttclid) return getCookie("ttclid");
+
+  setCookie("ttclid", ttclid);
+  return ttclid;
+}
+
+function getOrCreateTtp() {
+  const existing = getCookie("_ttp");
+  if (existing) return existing;
+
+  const randomValue = Math.floor(Math.random() * 10 ** 16);
+  const ttp = `tt.1.${Date.now()}.${randomValue}`;
+  setCookie("_ttp", ttp);
+  return ttp;
+}
+
 function getOrCreateExternalId() {
   const existing = getCookie(externalIdCookieName);
   if (existing) return existing;
@@ -390,6 +407,16 @@ function getOrCreateExternalId() {
     : `${Date.now()}.${Math.random().toString(16).slice(2)}`;
   setCookie(externalIdCookieName, externalId, 365);
   return externalId;
+}
+
+function getTikTokUserData(extra = {}) {
+  return {
+    ttp: getOrCreateTtp(),
+    ttclid: captureTtclid(),
+    external_id: extra.external_id || getOrCreateExternalId(),
+    email: extra.email,
+    phone: extra.phone,
+  };
 }
 
 function getMetaUserData(extra = {}) {
@@ -402,11 +429,11 @@ function getMetaUserData(extra = {}) {
   };
 }
 
-function getMetaAttributionData() {
+function getTikTokAttributionData() {
   return {
-    fbp: getOrCreateFbp(),
-    fbc: captureFbclid(),
-    external_id: getOrCreateExternalId(),
+    ...getMetaUserData(),
+    ttp: getOrCreateTtp(),
+    ttclid: captureTtclid(),
     event_source_url: window.location.href,
   };
 }
@@ -434,14 +461,41 @@ function getTrackingData() {
 }
 
 function createEventId(eventName) {
+  const normalizedEventName = getTikTokEventName(eventName);
+
   if (window.crypto?.randomUUID) {
-    return `${eventName}.${window.crypto.randomUUID()}`;
+    return `${normalizedEventName}.${window.crypto.randomUUID()}`;
   }
 
-  return `${eventName}.${Date.now()}.${Math.random().toString(16).slice(2)}`;
+  return `${normalizedEventName}.${Date.now()}.${Math.random().toString(16).slice(2)}`;
 }
 
-function sendCapiEvent({ eventName, eventId, params = {}, customer = {} }) {
+function getTikTokEventName(eventName) {
+  if (eventName === "Purchase") return "CompletePayment";
+  return eventName;
+}
+
+function sendTikTokApiEvent({ eventName, eventId, params = {}, customer = {} }) {
+  const tiktokEventName = getTikTokEventName(eventName);
+
+  return fetch("/api/tiktok/events", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      event_name: tiktokEventName,
+      event_id: eventId,
+      event_source_url: window.location.href,
+      custom_data: params,
+      user_data: getTikTokUserData(customer),
+    }),
+  }).catch((error) => {
+    console.warn("[TikTok Events API] Falha ao enviar evento", tiktokEventName, error);
+  });
+}
+
+function sendMetaApiEvent({ eventName, eventId, params = {}, customer = {} }) {
   return fetch("/api/meta/events", {
     method: "POST",
     headers: {
@@ -459,6 +513,31 @@ function sendCapiEvent({ eventName, eventId, params = {}, customer = {} }) {
   });
 }
 
+function trackTikTokEvent(eventName, params = {}, options = {}) {
+  const tiktokEventName = getTikTokEventName(eventName);
+  const eventId = options.eventId || createEventId(eventName);
+  const customer = options.customer || latestCustomerData || {};
+
+  if (!options.skipBrowser && typeof window.ttq === "object") {
+    if (tiktokEventName === "PageView") {
+      window.ttq.page();
+    } else {
+      window.ttq.track(tiktokEventName, params, { event_id: eventId });
+    }
+  }
+
+  if (!options.skipCapi) {
+    sendTikTokApiEvent({
+      eventName: tiktokEventName,
+      eventId,
+      params,
+      customer,
+    });
+  }
+
+  return eventId;
+}
+
 function trackMetaEvent(eventName, params = {}, options = {}) {
   const eventId = options.eventId || createEventId(eventName);
   const customer = options.customer || latestCustomerData || {};
@@ -468,7 +547,7 @@ function trackMetaEvent(eventName, params = {}, options = {}) {
   }
 
   if (!options.skipCapi) {
-    sendCapiEvent({
+    sendMetaApiEvent({
       eventName,
       eventId,
       params,
@@ -479,10 +558,19 @@ function trackMetaEvent(eventName, params = {}, options = {}) {
   return eventId;
 }
 
-function trackPixel(eventName, params = {}) {
-  if (typeof window.fbq === "function") {
-    window.fbq("track", eventName, params);
-  }
+function trackAdEvent(eventName, params = {}, options = {}) {
+  const eventId = options.eventId || createEventId(eventName);
+
+  trackMetaEvent(eventName, params, {
+    ...options,
+    eventId,
+  });
+  trackTikTokEvent(eventName, params, {
+    ...options,
+    eventId: getTikTokEventName(eventName) === eventName ? eventId : eventId.replace(eventName, getTikTokEventName(eventName)),
+  });
+
+  return eventId;
 }
 
 function getPurchaseStorageKey(orderId) {
@@ -757,7 +845,7 @@ function openCheckout(sourceButton, options = {}) {
   prefillCheckoutForm();
 
   if (!checkoutTracked) {
-    trackMetaEvent("InitiateCheckout", getPixelProductParams());
+    trackAdEvent("InitiateCheckout", getPixelProductParams());
     checkoutTracked = true;
   }
 
@@ -921,7 +1009,7 @@ async function checkOrderStatus() {
       </div>
     `;
     if (!hasTrackedPurchase(currentOrderId)) {
-      trackMetaEvent("Purchase", getPurchasePixelParams(), {
+      trackAdEvent("Purchase", getPurchaseEventParams(), {
         eventId: `Purchase.${currentOrderId}`,
         skipCapi: true,
       });
@@ -976,7 +1064,8 @@ promoToggle?.addEventListener("click", () => {
 });
 
 trackMetaEvent("PageView", {}, { eventId: window.__metaPageViewEventId, skipBrowser: true });
-trackMetaEvent("ViewContent", getPixelProductParams());
+trackTikTokEvent("PageView", {}, { eventId: window.__tiktokPageViewEventId, skipBrowser: true });
+trackAdEvent("ViewContent", getPixelProductParams());
 updatePromoValidity();
 updateCheckoutTotals();
 restoreActiveOrder();
@@ -1083,7 +1172,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
         deliveryPreference: payload.deliveryPreference,
         planId: payload.planId || selectedPlan.id,
         offerAccepted: checkoutOfferAccepted,
-        attribution: getMetaAttributionData(),
+        attribution: getTikTokAttributionData(),
         tracking: getTrackingData(),
       }),
     });
@@ -1129,12 +1218,8 @@ checkoutForm?.addEventListener("submit", async (event) => {
     showPixResult();
     scrollToPixResult();
     if (!addToCartTracked) {
-      trackMetaEvent("AddToCart", getPixelProductParams(), { customer: latestCustomerData });
+      trackAdEvent("AddToCart", getPixelProductParams(), { customer: latestCustomerData });
       addToCartTracked = true;
-    }
-    if (!leadTracked) {
-      trackMetaEvent("Lead", getPixelProductParams(), { customer: latestCustomerData });
-      leadTracked = true;
     }
     setFeedback("Pix gerado. Pague usando o QR Code ou o copia e cola.", "success");
     deliveryStatus.textContent = currentTransactionHash

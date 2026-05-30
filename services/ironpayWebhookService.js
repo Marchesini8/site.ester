@@ -2,6 +2,7 @@ const paymentStatusStore = require("./paymentStatusStore");
 const orderStore = require("./orderStore");
 const deliveryService = require("./deliveryService");
 const metaCapiService = require("./metaCapiService");
+const tiktokEventsService = require("./tiktokEventsService");
 
 const PAID_STATUSES = new Set([
   "paid",
@@ -81,7 +82,7 @@ function normalizeWebhookPayload(payload = {}) {
   };
 }
 
-async function sendPurchaseEvent(req, order) {
+async function sendMetaPurchaseEvent(req, order) {
   if (!order?.isPaid || order.metaPurchaseEventSent) return null;
 
   try {
@@ -100,6 +101,38 @@ async function sendPurchaseEvent(req, order) {
     });
     return null;
   }
+}
+
+async function sendTikTokPurchaseEvent(req, order) {
+  if (!order?.isPaid || order.tiktokPurchaseEventSent) return null;
+
+  try {
+    const result = await tiktokEventsService.sendPurchaseFromOrder(req, order);
+    orderStore.updateOrder(order.id, {
+      tiktokPurchaseEventSent: true,
+      tiktokPurchaseEventSentAt: new Date().toISOString(),
+      tiktokPurchaseEventId: `CompletePayment.${order.id}`,
+    });
+    return result;
+  } catch (error) {
+    console.error("[TikTok Events API] Falha ao enviar CompletePayment do webhook:", error.message);
+    orderStore.updateOrder(order.id, {
+      tiktokPurchaseEventError: error.message,
+      tiktokPurchaseEventErrorAt: new Date().toISOString(),
+    });
+    return null;
+  }
+}
+
+async function sendPurchaseEvent(req, order) {
+  if (!order?.isPaid) return null;
+
+  const [meta, tiktok] = await Promise.all([
+    sendMetaPurchaseEvent(req, order),
+    sendTikTokPurchaseEvent(req, order),
+  ]);
+
+  return { meta, tiktok };
 }
 
 async function processWebhook(payload, req) {
@@ -122,7 +155,7 @@ async function processWebhook(payload, req) {
     });
 
     if (normalized.isPaid) {
-      normalized.meta = await sendPurchaseEvent(req, updated);
+      normalized.events = await sendPurchaseEvent(req, updated);
       normalized.delivery = await deliveryService.deliverOrder(updated);
     }
   }

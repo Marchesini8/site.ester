@@ -22,7 +22,7 @@ router.get("/:orderId/status", async (req, res) => {
     });
   }
 
-  if (order.isPaid && !order.metaPurchaseEventSent) {
+  if (order.isPaid && (!order.metaPurchaseEventSent || !order.tiktokPurchaseEventSent)) {
     if (!order.deliveryAttempts?.length) {
       await deliveryService.deliverOrder(order);
     }
