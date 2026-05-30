@@ -227,7 +227,11 @@ function markPurchaseTracked(orderId) {
 
 function updateTotal() {
   if (checkoutPlanLabel) checkoutPlanLabel.textContent = selectedPlan.label;
-  if (checkoutPlanPeriod) checkoutPlanPeriod.textContent = selectedPlan.period;
+  if (checkoutPlanPeriod) {
+    const showPeriod = selectedPlan.period && selectedPlan.period !== selectedPlan.label;
+    checkoutPlanPeriod.textContent = showPeriod ? selectedPlan.period : "";
+    checkoutPlanPeriod.hidden = !showPeriod;
+  }
   if (checkoutPlanPrice) checkoutPlanPrice.textContent = formatCurrency(selectedPlan.price);
   if (checkoutTotal) checkoutTotal.textContent = formatCurrency(getTotal());
   if (generatePixButton) generatePixButton.textContent = `GERAR PIX - ${formatCurrency(getTotal())}`;
