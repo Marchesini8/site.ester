@@ -161,8 +161,10 @@ exports.createPixPayment = async ({ items, customer, delivery, tracking = {} }) 
           utm_source: tracking.utm_source || "",
           utm_medium: tracking.utm_medium || "",
           utm_campaign: tracking.utm_campaign || "",
+          utm_adset: tracking.utm_adset || "",
           utm_term: tracking.utm_term || "",
           utm_content: tracking.utm_content || "",
+          fbclid: tracking.fbclid || "",
         },
       },
       {

@@ -105,7 +105,26 @@ function getPixelProductParams() {
     contents,
     currency: "BRL",
     value: getTotal(),
+    ...getAttributionEventParams(),
   };
+}
+
+function getAttributionEventParams() {
+  const tracking = getTrackingData();
+  return Object.fromEntries(
+    [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_adset",
+      "utm_content",
+      "utm_term",
+      "fbclid",
+      "src",
+    ]
+      .map((key) => [key, tracking[key]])
+      .filter(([, value]) => value)
+  );
 }
 
 function getCookie(name) {
@@ -119,7 +138,7 @@ function setCookie(name, value, days = 90) {
 }
 
 function captureFbclid() {
-  const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+  const fbclid = window.SiteAttribution?.getTrackingData?.().fbclid || new URLSearchParams(window.location.search).get("fbclid");
   if (!fbclid) return getCookie("_fbc");
 
   const existing = getCookie("_fbc");
@@ -131,6 +150,8 @@ function captureFbclid() {
 }
 
 function getOrCreateFbp() {
+  if (window.SiteAttribution?.getOrCreateFbp) return window.SiteAttribution.getOrCreateFbp();
+
   const existing = getCookie("_fbp");
   if (existing) return existing;
 
@@ -141,6 +162,8 @@ function getOrCreateFbp() {
 }
 
 function getOrCreateExternalId() {
+  if (window.SiteAttribution?.getOrCreateExternalId) return window.SiteAttribution.getOrCreateExternalId();
+
   const existing = getCookie(externalIdCookieName);
   if (existing) return existing;
 
@@ -179,7 +202,10 @@ function sendMetaApiEvent({ eventName, eventId, params = {}, customer = {} }) {
       event_name: eventName,
       event_id: eventId,
       event_source_url: window.location.href,
-      custom_data: params,
+      custom_data: {
+        ...getAttributionEventParams(),
+        ...params,
+      },
       user_data: getMetaUserData(customer),
     }),
   }).catch((error) => {
@@ -392,18 +418,28 @@ function showPixResult(data = {}) {
 }
 
 function getTrackingData() {
+  if (window.SiteAttribution?.getTrackingData) {
+    return window.SiteAttribution.getTrackingData();
+  }
+
   const params = new URLSearchParams(window.location.search);
   return {
     src: params.get("src") || "",
     utm_source: params.get("utm_source") || "",
     utm_medium: params.get("utm_medium") || "",
     utm_campaign: params.get("utm_campaign") || "",
+    utm_adset: params.get("utm_adset") || "",
     utm_term: params.get("utm_term") || "",
     utm_content: params.get("utm_content") || "",
+    fbclid: params.get("fbclid") || "",
   };
 }
 
 function getMetaAttributionData() {
+  if (window.SiteAttribution?.getMetaAttributionData) {
+    return window.SiteAttribution.getMetaAttributionData();
+  }
+
   return {
     ...getMetaUserData(),
     event_source_url: window.location.href,

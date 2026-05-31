@@ -66,6 +66,7 @@ function sanitizeAttribution(value = {}) {
   return {
     fbp: value.fbp || "",
     fbc: value.fbc || "",
+    fbclid: value.fbclid || "",
     external_id: value.external_id || "",
     event_source_url: value.event_source_url || "",
   };
@@ -77,8 +78,13 @@ function sanitizeTracking(value = {}) {
     utm_source: value.utm_source || "",
     utm_medium: value.utm_medium || "",
     utm_campaign: value.utm_campaign || "",
+    utm_adset: value.utm_adset || "",
     utm_term: value.utm_term || "",
     utm_content: value.utm_content || "",
+    fbclid: value.fbclid || "",
+    first_landing_page: value.first_landing_page || "",
+    first_referrer: value.first_referrer || "",
+    captured_at: value.captured_at || "",
   };
 }
 
@@ -206,11 +212,13 @@ router.post("/checkout", async (req, res) => {
           metaAttribution: {
             fbp: attribution.fbp,
             fbc: attribution.fbc,
+            fbclid: attribution.fbclid || tracking.fbclid,
             external_id: attribution.external_id || metaCapiService.createExternalId(normalizedCustomer),
             event_source_url: attribution.event_source_url,
             client_ip_address: getIp(req),
             client_user_agent: req.headers["user-agent"] || "",
           },
+          tracking,
         });
 
         return { payment, order };

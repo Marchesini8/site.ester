@@ -59,6 +59,25 @@ function compactObject(value = {}) {
   );
 }
 
+function getAttributionCustomData(order = {}) {
+  const tracking = order.tracking || {};
+  const attribution = order.metaAttribution || {};
+
+  return compactObject({
+    utm_source: tracking.utm_source,
+    utm_medium: tracking.utm_medium,
+    utm_campaign: tracking.utm_campaign,
+    utm_adset: tracking.utm_adset,
+    utm_content: tracking.utm_content,
+    utm_term: tracking.utm_term,
+    fbclid: tracking.fbclid || attribution.fbclid,
+    src: tracking.src,
+    first_landing_page: tracking.first_landing_page,
+    first_referrer: tracking.first_referrer,
+    attribution_captured_at: tracking.captured_at,
+  });
+}
+
 function buildUserData(req, payload = {}) {
   const userData = payload.user_data || {};
   return compactObject({
@@ -239,6 +258,7 @@ async function sendPurchaseFromOrder(req, order) {
       ],
       currency: "BRL",
       value,
+      ...getAttributionCustomData(order),
     },
   });
 }
