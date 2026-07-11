@@ -6,6 +6,7 @@ const checkoutTotal = document.querySelector("#checkout-total");
 const addonInputs = document.querySelectorAll('input[name="addons"]');
 const checkoutFeedback = document.querySelector("#checkout-feedback");
 const generatePixButton = document.querySelector(".generate-pix");
+const checkoutIdentityInputs = checkoutForm?.querySelectorAll('input[name="name"], input[name="email"]') || [];
 const prePixSafeStrip = document.querySelector(".pre-pix-safe-strip");
 const pixResultPage = document.querySelector("#pix-result-page");
 const checkoutPixQr = document.querySelector("#checkout-pix-qr");
@@ -16,25 +17,25 @@ const checkoutDeliveryStatus = document.querySelector("#checkout-delivery-status
 
 const plans = {
   "15d": {
-    label: "Privacy Nicolle Caroline",
+    label: "Ester Muniz",
     period: "15 Dias",
     originalPrice: 49.9,
-    price: 19.9,
+    price: 20.93,
   },
   "30d": {
     label: "30 Dias",
     period: "30 Dias",
-    price: 62.9,
+    price: 20.93,
   },
   "3m": {
     label: "3 Meses",
     period: "3 Meses",
-    price: 75.9,
+    price: 80.73,
   },
   "6m": {
     label: "6 Meses",
     period: "6 Meses",
-    price: 87.9,
+    price: 134.55,
   },
   "upsell-6m": {
     label: "6 Meses",
@@ -47,9 +48,9 @@ let currentOrderId = null;
 let currentTransactionHash = null;
 let pollTimer = null;
 let pixCopyToastTimer = null;
-let selectedPlanId = new URLSearchParams(window.location.search).get("planId") || "15d";
-let selectedPlan = plans[selectedPlanId] || plans["15d"];
-if (!plans[selectedPlanId]) selectedPlanId = "15d";
+let selectedPlanId = new URLSearchParams(window.location.search).get("planId") || "30d";
+let selectedPlan = plans[selectedPlanId] || plans["30d"];
+if (!plans[selectedPlanId]) selectedPlanId = "30d";
 let latestCustomerData = {};
 let addToCartTracked = false;
 const externalIdCookieName = "site18_external_id";
@@ -494,6 +495,16 @@ addonInputs.forEach((input) => {
     setDeliveryStatus("");
   });
 });
+
+
+function updateGeneratePixVisibility() {
+  if (!generatePixButton || !checkoutForm) return;
+  const identityIsValid = Array.from(checkoutIdentityInputs).every((input) => input.value.trim() && input.checkValidity());
+  generatePixButton.classList.toggle("is-hidden", !identityIsValid);
+}
+
+checkoutIdentityInputs.forEach((input) => input.addEventListener("input", updateGeneratePixVisibility));
+updateGeneratePixVisibility();
 
 checkoutForm?.addEventListener("submit", async (event) => {
   event.preventDefault();

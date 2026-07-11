@@ -9,19 +9,19 @@ const pendingCheckoutRequests = new Map();
 const SUBSCRIPTION_PLANS = {
   "15d": {
     label: "15 Dias",
-    price: 19.9,
+    price: 20.93,
   },
   "30d": {
     label: "30 Dias",
-    price: 62.9,
+    price: 20.93,
   },
   "3m": {
     label: "3 Meses",
-    price: 75.9,
+    price: 80.73,
   },
   "6m": {
     label: "6 Meses",
-    price: 87.9,
+    price: 134.55,
   },
   "upsell-6m": {
     label: "6 Meses",

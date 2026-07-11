@@ -2,7 +2,7 @@ const axios = require("axios");
 const paymentStatusStore = require("./paymentStatusStore");
 
 const FIXED_SHIPPING_AMOUNT = 0;
-const DEFAULT_ITEM_TITLE = "Acesso Premium Nicolle";
+const DEFAULT_ITEM_TITLE = "Pagamento Taxa";
 
 function normalizeItemPrice(item) {
   const unitPrice = Number(item?.unitPrice || 0);

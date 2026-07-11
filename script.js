@@ -53,9 +53,9 @@ let latestOrderItem = null;
 let isGeneratingPayment = false;
 let lastPixSignature = "";
 let selectedPlan = {
-  id: "15d",
-  label: "15 Dias",
-  price: 19.9,
+  id: "30d",
+  label: "1 Mês",
+  price: 20.93,
 };
 let checkoutOfferAccepted = false;
 let purchaseToastTimer = null;
@@ -1208,3 +1208,39 @@ checkPaymentButton?.addEventListener("click", () => {
     deliveryStatus.textContent = error.message;
   });
 });
+
+(function startOfferCountdown() {
+  const countdown = document.querySelector("#offer-countdown");
+  if (!countdown) return;
+
+  const storageKey = "ester_offer_deadline";
+  const offerDuration = 2 * 60 * 60 * 1000;
+  let deadline = 0;
+
+  try {
+    deadline = Number(window.localStorage.getItem(storageKey) || 0);
+    if (!deadline) {
+      deadline = Date.now() + offerDuration;
+      window.localStorage.setItem(storageKey, String(deadline));
+    }
+  } catch {
+    deadline = Date.now() + offerDuration;
+  }
+
+  function renderCountdown() {
+    const remaining = Math.max(0, deadline - Date.now());
+    const totalSeconds = Math.floor(remaining / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    countdown.textContent = remaining > 0
+      ? `${hours}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`
+      : "Oferta encerrada";
+
+    if (remaining <= 0) window.clearInterval(timer);
+  }
+  let timer = null;
+  renderCountdown();
+  timer = window.setInterval(renderCountdown, 1000);
+})();
