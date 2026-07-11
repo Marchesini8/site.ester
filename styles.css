@@ -1939,3 +1939,47 @@ body { background: var(--privacy-bg); color: #20232b; }
     white-space: nowrap;
   }
 }
+/* Botões de assinatura mais compactos, seguindo a proporção da referência. */
+@media (max-width: 600px) {
+  .hero-plan {
+    min-height: 50px;
+    padding: 0 18px;
+    border-radius: 26px;
+    font-size: 18px;
+  }
+
+  .plan-option {
+    min-height: 50px;
+    padding: 0 18px;
+    border-radius: 26px;
+    font-size: 15px;
+  }
+
+  .plan-option + .plan-option {
+    margin-top: 12px;
+  }
+
+  .discount-label {
+    padding: 4px 12px;
+    font-size: 14px;
+  }
+}
+/* Aviso de nova assinatura encaixado ao lado do perfil no celular. */
+@media (max-width: 600px) {
+  .profile-head .purchase-toast {
+    top: 104px;
+    right: 16px;
+    width: 142px;
+    min-height: 42px;
+    padding: 6px 18px 6px 15px;
+    border-width: 1px;
+    border-radius: 8px;
+    gap: 1px 4px;
+    z-index: 20;
+  }
+  .profile-head .purchase-toast::before { left: 7px; width: 5px; height: 5px; }
+  .profile-head .purchase-toast strong { font-size: 0.58rem; }
+  .profile-head .purchase-toast em { padding: 1px 4px; font-size: 0.5rem; }
+  .profile-head .purchase-toast span { font-size: 0.56rem; }
+  .profile-head .toast-close { top: 3px; right: 5px; padding: 0; font-size: 14px; }
+}
