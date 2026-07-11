@@ -14,6 +14,9 @@ const checkoutPixEmpty = document.querySelector("#checkout-pix-empty");
 const checkoutPixCode = document.querySelector("#checkout-pix-code");
 const copyPixPageButton = document.querySelector(".copy-pix-page");
 const checkoutDeliveryStatus = document.querySelector("#checkout-delivery-status");
+const telegramSuccessModal = document.querySelector("#telegram-success-modal");
+const telegramSuccessClose = document.querySelector(".telegram-success-close");
+const telegramUnlockStorageKey = "telegram_access_unlocked";
 
 const plans = {
   "15d": {
@@ -447,6 +450,29 @@ function getMetaAttributionData() {
   };
 }
 
+
+function showTelegramSuccessModal() {
+  telegramSuccessModal?.classList.add("is-visible");
+  telegramSuccessModal?.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+
+  try {
+    window.localStorage.setItem(telegramUnlockStorageKey, "1");
+  } catch {
+    // O acesso continua funcionando mesmo quando o navegador bloqueia o armazenamento local.
+  }
+}
+
+function closeTelegramSuccessModal() {
+  telegramSuccessModal?.classList.remove("is-visible");
+  telegramSuccessModal?.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+telegramSuccessClose?.addEventListener("click", closeTelegramSuccessModal);
+telegramSuccessModal?.addEventListener("click", (event) => {
+  if (event.target === telegramSuccessModal) closeTelegramSuccessModal();
+});
 async function checkOrderStatus() {
   if (!currentOrderId) return;
 
@@ -468,6 +494,7 @@ async function checkOrderStatus() {
       markPurchaseTracked(currentOrderId);
     }
     setDeliveryStatus("Pagamento confirmado. Seu acesso foi liberado.", "success");
+    showTelegramSuccessModal();
     return;
   }
 
@@ -595,3 +622,11 @@ document.addEventListener("pointerdown", blurCheckoutFieldOnOutsideTap);
 trackMetaEvent("PageView", {}, { eventId: window.__metaPageViewEventId, skipBrowser: true });
 trackAdEvent("ViewContent", getPixelProductParams());
 updateTotal();
+
+try {
+  if (window.localStorage.getItem(telegramUnlockStorageKey) === "1") {
+    showTelegramSuccessModal();
+  }
+} catch {
+  // Sem restauração quando o armazenamento local não está disponível.
+}

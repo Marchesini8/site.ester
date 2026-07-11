@@ -74,6 +74,11 @@
       </section>
 
       <div class="checkout-grid">
+      <div class="email-delivery-notice" role="note">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+        <p><strong>Importante:</strong> o login para acessar o conteúdo será enviado para o e-mail informado abaixo.</p>
+      </div>
+
         <div class="checkout-main">
           <form id="checkout-page-form">
             <section class="checkout-panel">
@@ -155,6 +160,17 @@
       </div>
     </main>
 
-    <script src="/checkout.js"></script>
+
+    <div class="telegram-success-modal" id="telegram-success-modal" aria-hidden="true">
+      <div class="telegram-success-card" role="dialog" aria-modal="true" aria-labelledby="telegram-success-title">
+        <button class="telegram-success-close" type="button" aria-label="Fechar">×</button>
+        <div class="telegram-success-icon"><i class="fas fa-check"></i></div>
+        <h2 id="telegram-success-title">Pagamento aprovado!</h2>
+        <p>Seu acesso foi liberado. Clique no botão abaixo para continuar pelo Telegram.</p>
+        <a href="https://t.me/anacamargoxzzbot" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-telegram-plane"></i> Acessar no Telegram
+        </a>
+      </div>
+    </div>    <script src="/checkout.js"></script>
   </body>
 </html>

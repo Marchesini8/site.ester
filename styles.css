@@ -1928,3 +1928,14 @@ body { background: var(--privacy-bg); color: #20232b; }
   .hero-plan { min-height: 62px; font-size: 20px; }.plan-option { min-height: 64px; padding: 0 20px; font-size: 17px; }.promo-toggle { font-size: 21px; }
   .profile-tabs { margin: 24px 16px 0; min-height: 72px; font-size: 15px; }.feed-media { margin: 24px 16px; }.faq-section { margin-left: 16px; margin-right: 16px; }
 }
+/* Mantém a pergunta de chamada alinhada com as demais no celular. */
+@media (max-width: 600px) {
+  .faq-list summary.video-call-question {
+    min-height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 0.88rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+}
