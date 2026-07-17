@@ -54,7 +54,7 @@ let isGeneratingPayment = false;
 let lastPixSignature = "";
 let selectedPlan = {
   id: "xp-rosa",
-  label: "XP Rosa",
+  label: "VIP Rosa",
   price: 9.99,
 };
 let checkoutOfferAccepted = false;
@@ -272,7 +272,7 @@ const purchaseToastNames = [
   "Firmino",
   "Gregorio",
 ];
-const purchaseToastPlans = ["XP Rosa", "XP Ouro", "XP Diamante"];
+const purchaseToastPlans = ["VIP Rosa", "VIP Ouro", "VIP Diamante"];
 const purchaseToastTimes = ["ha 2 minutos", "ha 3 minutos", "ha 5 minutos"];
 let purchaseToastIndex = 0;
 
@@ -1040,7 +1040,7 @@ upsellAcceptButton?.addEventListener("click", () => {
   closeUpsellOffer();
   openCheckout({
     id: "xp-diamante",
-    label: "XP Diamante",
+    label: "VIP Diamante",
     price: 49.99,
   }, { fresh: true });
 });

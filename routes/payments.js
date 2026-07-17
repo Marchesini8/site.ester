@@ -8,15 +8,15 @@ const pendingCheckoutRequests = new Map();
 
 const SUBSCRIPTION_PLANS = {
   "xp-rosa": {
-    label: "XP Rosa",
+    label: "VIP Rosa",
     price: 9.99,
   },
   "xp-ouro": {
-    label: "XP Ouro",
+    label: "VIP Ouro",
     price: 29.99,
   },
   "xp-diamante": {
-    label: "XP Diamante",
+    label: "VIP Diamante",
     price: 49.99,
   },
 };

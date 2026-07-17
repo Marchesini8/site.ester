@@ -22,18 +22,18 @@ const telegramUnlockStorageKey = "telegram_access_unlocked";
 
 const plans = {
   "xp-rosa": {
-    label: "XP Rosa 🌸",
-    period: "XP Rosa",
+    label: "VIP Rosa 🌸",
+    period: "VIP Rosa",
     price: 9.99,
   },
   "xp-ouro": {
-    label: "XP Ouro 🥇",
-    period: "XP Ouro",
+    label: "VIP Ouro 🥇",
+    period: "VIP Ouro",
     price: 29.99,
   },
   "xp-diamante": {
-    label: "XP Diamante 💎",
-    period: "XP Diamante",
+    label: "VIP Diamante 💎",
+    period: "VIP Diamante",
     price: 49.99,
   },
 };
