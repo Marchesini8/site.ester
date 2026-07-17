@@ -113,9 +113,11 @@ video {
 
 .age-card {
   display: grid;
-  gap: 22px;
+  gap: 16px;
   width: min(460px, calc(100vw - 32px));
-  padding: 34px 10px 30px;
+  max-height: calc(100dvh - 88px);
+  overflow-y: auto;
+  padding: 24px 18px 22px;
   border-radius: 14px;
   background: #fff;
   color: #111;
@@ -125,20 +127,31 @@ video {
 }
 
 .age-card img {
-  width: 126px;
-  margin: 0 auto 14px;
+  width: 112px;
+  margin: 0 auto 4px;
 }
 
 .age-card h1 {
   margin: 0;
-  font-size: 1.42rem;
+  font-size: 1.3rem;
   font-weight: 850;
 }
 
-.age-card p {
+.age-copy {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+.age-copy p {
   margin: 0;
   color: #343b46;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
+  line-height: 1.42;
+}
+
+.age-copy strong {
+  color: #161b24;
 }
 
 .age-confirm {
@@ -152,6 +165,44 @@ video {
   font-weight: 850;
   cursor: pointer;
   animation: pulseButton 1.7s ease-in-out infinite;
+}
+
+@media (max-width: 600px) {
+  .age-gate {
+    padding: 12px;
+  }
+
+  .age-card {
+    width: min(100%, 390px);
+    max-height: calc(100dvh - 64px);
+    padding: 18px 15px 16px;
+    gap: 12px;
+  }
+
+  .age-card img {
+    width: 96px;
+  }
+
+  .age-card h1 {
+    font-size: 1.08rem;
+  }
+
+  .age-copy {
+    gap: 8px;
+  }
+
+  .age-copy p {
+    font-size: 0.78rem;
+    line-height: 1.34;
+  }
+
+  .age-confirm {
+    min-height: 48px;
+  }
+
+  .age-links {
+    display: none;
+  }
 }
 
 .age-links {
