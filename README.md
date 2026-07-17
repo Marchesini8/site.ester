@@ -1,6 +1,6 @@
 # Site 18 Webzip
 
-Site 18 com visual do perfil Nicolle/Privacy e checkout Pix integrado pela Iron Pay.
+Site com visual do perfil Ana Camargo/Privacy e checkout Pix integrado pela Iron Pay.
 
 ## Rodar local
 

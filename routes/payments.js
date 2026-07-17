@@ -7,25 +7,17 @@ const router = express.Router();
 const pendingCheckoutRequests = new Map();
 
 const SUBSCRIPTION_PLANS = {
-  "15d": {
-    label: "15 Dias",
-    price: 20.93,
+  "xp-rosa": {
+    label: "XP Rosa",
+    price: 9.99,
   },
-  "30d": {
-    label: "30 Dias",
-    price: 20.93,
+  "xp-ouro": {
+    label: "XP Ouro",
+    price: 29.99,
   },
-  "3m": {
-    label: "3 Meses",
-    price: 80.73,
-  },
-  "6m": {
-    label: "6 Meses",
-    price: 134.55,
-  },
-  "upsell-6m": {
-    label: "6 Meses",
-    price: 19.9,
+  "xp-diamante": {
+    label: "XP Diamante",
+    price: 49.99,
   },
 };
 
@@ -89,7 +81,7 @@ function sanitizeTracking(value = {}) {
 }
 
 function getSelectedPlan(planId) {
-  return SUBSCRIPTION_PLANS[planId] || SUBSCRIPTION_PLANS["15d"];
+  return SUBSCRIPTION_PLANS[planId] || SUBSCRIPTION_PLANS["xp-rosa"];
 }
 
 function getSelectedAddons(body = {}) {
@@ -119,7 +111,7 @@ function toCents(value) {
 }
 
 function getCheckoutRequestKey({ customer, planId }) {
-  return [String(customer.email || "").trim().toLowerCase(), planId || "15d"].join("|");
+  return [String(customer.email || "").trim().toLowerCase(), planId || "xp-rosa"].join("|");
 }
 
 router.post("/checkout", async (req, res) => {
@@ -140,7 +132,7 @@ router.post("/checkout", async (req, res) => {
     };
 
     const selectedPlan = getSelectedPlan(planId);
-    const normalizedPlanId = SUBSCRIPTION_PLANS[planId] ? planId : "15d";
+    const normalizedPlanId = SUBSCRIPTION_PLANS[planId] ? planId : "xp-rosa";
     const selectedAddons = getSelectedAddons(req.body);
     const addonKey = selectedAddons.map((addon) => addon.id).sort().join(",");
     const selectedTotalInCents =
@@ -171,7 +163,7 @@ router.post("/checkout", async (req, res) => {
       });
     }
 
-    const productName = `${process.env.PRODUCT_NAME || "Acesso Premium Nicolle"} - ${selectedPlan.label}`;
+    const productName = `${process.env.PRODUCT_NAME || "Acesso Premium Ana Camargo"} - ${selectedPlan.label}`;
     const paymentItem = {
       title: productName,
       price: selectedTotal,

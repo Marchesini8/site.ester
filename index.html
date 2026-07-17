@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ester Muniz - Privacy</title>
-    <meta name="description" content="Perfil exclusivo da Ester Muniz com assinatura via Pix." />
+    <title>Ana Camargo</title>
+    <meta name="description" content="Perfil exclusivo da Ana Camargo com assinatura via Pix." />
     <link rel="stylesheet" href="/nicolle/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -62,28 +62,50 @@
       />
     </noscript>
   </head>
-  <body>
-    <div class="site-shell is-ready" id="site-shell" aria-hidden="false">
-<header class="top-logo">
+  <body class="age-locked">
+    <div class="age-gate" id="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
+      <div class="age-card">
+        <img src="/nicolle/images/privacy-logo-reference.png" alt="Privacy" />
+        <h1 id="age-title">Confirmação de Idade</h1>
+        <p>Por favor, confirme sua idade para continuar.</p>
+        <button class="age-confirm" id="age-confirm" type="button">Tenho mais de 18 anos</button>
+      </div>
+      <div class="age-links">
+        <a href="#">Política de Privacidade</a>
+        <span>•</span>
+        <a href="#">Termos de Uso</a>
+      </div>
+    </div>
+
+    <div class="site-shell" id="site-shell" aria-hidden="true">
+      <div class="promo-bar" id="promo-validity">ESSA PROMOÇÃO É VÁLIDA ATÉ 26/05/2026</div>
+
+      <header class="top-logo">
         <img src="/assets/privacy-logo-cropped.png" alt="Privacy" />
       </header>
 
       <main class="profile-page">
         <section class="profile-card">
           <div class="cover-section">
-            <img class="cover-photo" src="/assets/ester/cover.jpeg" alt="Capa do perfil" />
+            <img class="cover-photo" src="/assets/ana/cover.png" alt="Capa do perfil de Ana Camargo" />
             <div class="media-stats cover-stats" aria-label="Resumo de mídias">
-              <span><i class="fas fa-image"></i>735</span>
-              <span><i class="fas fa-video"></i>626</span>
-              <span><i class="far fa-heart"></i>244.1K</span>
+              <span><i class="fas fa-image"></i>354</span>
+              <span><i class="fas fa-video"></i>148</span>
+              <span><i class="far fa-heart"></i>20.2K</span>
+            </div>
+            <div class="purchase-toast" id="purchase-toast" aria-live="polite" aria-hidden="true">
+              <button class="toast-close" type="button" aria-label="Fechar">&times;</button>
+              <strong id="purchase-toast-name">Joao Pedro assinou</strong>
+              <em id="purchase-toast-plan">3 Meses</em>
+              <span id="purchase-toast-time">ha 3 minutos</span>
             </div>
           </div>
 
           <div class="profile-head">
-            <img class="avatar" src="/assets/ester/avatar.jpeg" alt="Ester Muniz" />
+            <img class="avatar" src="/assets/ana/profile.jpeg" alt="Ana Camargo" />
             <div class="identity">
               <h1>
-                Ester Muniz
+                Ana Camargo
                 <span class="verified" aria-label="Verificado">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path
@@ -92,51 +114,117 @@
                   </svg>
                 </span>
               </h1>
-              <p>@Esttermuniz</p>
+              <p>@anacamargo</p>
             </div>
-            <div class="purchase-toast" id="purchase-toast" aria-live="polite" aria-hidden="true">
-
-                          <button class="toast-close" type="button" aria-label="Fechar">&times;</button>
-
-                          <strong id="purchase-toast-name">Joao Pedro assinou</strong>
-
-                          <em id="purchase-toast-plan">3 Meses</em>
-
-                          <span id="purchase-toast-time">ha 3 minutos</span>
-
-                        </div>
           </div>
 
-          <div class="bio-block"><p class="bio-text">✨ Participações especiais: KID BENGALA, MC PIPOQUINHA, ANÃO E MUITO MAIS......</p></div>
+          <div class="bio-block is-collapsed">
+            <p class="bio-text" id="bioText">
+              🚨 O que todos sempre quiseram ver agora foi liberado e sem censura... Após término de relacionamento
+              a influencer Ana Camargo deixou vazar vários vídeos íntimos dela, e isso ta virando a internet de
+              ponta cabeça... Tem mais de 50 videos dela fazendo sexo e se masturbando, todos explícitos e sem censura.
+              Sem contar as 100 fotos dela totalmente nua e com brinquedinhos . E não para por ai ta vindo cada vez mais
+              vazados dela! 🔥 😈
+            </p>
+            <button class="bio-toggle" id="bioToggle" type="button">Mostrar mais</button>
+          </div>
 
           <section class="subscriptions" aria-labelledby="subscriptions-title">
-            <div class="subscription-offer">
-              <h2>✨ Oferta de assinatura</h2>
-              <p class="offer-timer">Termina em <span id="offer-countdown">1h 43m 4s</span></p>
-              <div class="offer-copy"><img src="/assets/ester/avatar.jpeg" alt="" />ASSINE AGORA PELO MENOR VALOR E VEJA MEU VÍDEO COM MC PIPOQUINHA E KID BENGALA</div>
-              <span class="discount-label">Economize 30%</span>
-              <button class="hero-plan open-checkout" type="button" data-plan-id="30d" data-plan-label="1 Mês" data-plan-price="20.93"><strong>Assinar agora R$ 20,93</strong></button>
-              <p class="original-price">Preço original <del>R$ 29,90</del></p>
+            <h2 id="subscriptions-title">Assinaturas</h2>
+            <div class="tag-row">
+              <span class="pill hot">ESCOLHA SEU XP ✨</span>
+              <span class="pill promo">Acesso imediato</span>
             </div>
-            <div class="subscription-plans">
-              <button class="promo-toggle" type="button" aria-expanded="true"><span>Assinaturas</span><i class="fas fa-chevron-up"></i></button>
-              <div class="plan-list" id="plan-list">
-                <button class="plan-option open-checkout" type="button" data-plan-id="3m" data-plan-label="3 Meses" data-plan-price="80.73"><span class="plan-left"><strong>3 meses</strong> <em>(10% off)</em></span><strong>R$ 80,73</strong></button>
-                <button class="plan-option open-checkout" type="button" data-plan-id="6m" data-plan-label="6 Meses" data-plan-price="134.55"><span class="plan-left"><strong>6 meses</strong> <em>(25% off)</em></span><strong>R$ 134,55</strong></button>
-              </div>
+
+            <button
+              class="hero-plan open-checkout"
+              type="button"
+              data-plan-id="xp-rosa"
+              data-plan-label="XP Rosa"
+              data-plan-price="9.99"
+            >
+              <strong>XP Rosa 🌸</strong>
+              <span>
+                <strong class="price-new">R$ 9,99</strong>
+                <i class="fas fa-arrow-right"></i>
+              </span>
+            </button>
+
+            <div class="bonus-pill">PLANO DE ENTRADA • LIBERAÇÃO IMEDIATA</div>
+
+            <div class="trust-line" aria-label="Garantias">
+              <span><i class="fas fa-lock"></i> Pagamento 100% seguro</span>
+              <span>•</span>
+              <span><i class="fas fa-bolt"></i> Acesso imediato</span>
+            </div>
+
+            <button class="promo-toggle" type="button" aria-expanded="true">
+              <span>Outras opções</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+
+            <div class="plan-list" id="plan-list">
+              <button
+                class="plan-option xp-gold open-checkout"
+                type="button"
+                data-plan-id="xp-ouro"
+                data-plan-label="XP Ouro"
+                data-plan-price="29.99"
+              >
+                <span class="plan-left">🥇 <strong>XP Ouro</strong> <em>Mais popular</em></span>
+                <strong>R$ 29,99</strong>
+              </button>
+              <button
+                class="plan-option xp-diamond open-checkout"
+                type="button"
+                data-plan-id="xp-diamante"
+                data-plan-label="XP Diamante"
+                data-plan-price="49.99"
+              >
+                <span class="plan-left">💎 <strong>XP Diamante</strong> <em class="blue">Completo</em></span>
+                <strong>R$ 49,99</strong>
+              </button>
             </div>
           </section>
 
-          <nav class="profile-tabs" aria-label="Conteúdos"><span class="active">▣ 1.122 Postagens</span><span>▧ 1.361 Mídias</span></nav>
+          <nav class="profile-tabs" aria-label="Conteúdos">
+            <span>502 Posts</span>
+            <b>•</b>
+            <span class="active">148 Vídeos</span>
+            <b>•</b>
+            <span>354 Fotos</span>
+          </nav>
 
           <section class="content-preview" aria-label="Prévia do conteúdo">
+            <article class="feed-media">
+              <div class="feed-author">
+                <img src="/assets/ana/profile.jpeg" alt="" />
+                <div>
+                  <strong>Ana Camargo</strong>
+                  <span>@anacamargo</span>
+                </div>
+              </div>
+              <div class="locked-frame">
+                <video src="/nicolle/media/videomelmaia03.mp4" autoplay muted loop playsinline preload="auto"></video>
+                <span class="lock-badge"><i class="fas fa-lock"></i></span>
+                <div class="media-engagement" aria-label="67.4K likes e 1.9K comentários">
+                  <span><i class="far fa-heart"></i> 67.4K</span>
+                  <span><i class="far fa-comment"></i> 1.9K Comentarios</span>
+                </div>
+              </div>
+              <div class="feed-actions" aria-hidden="true">
+                <i class="far fa-heart"></i>
+                <i class="far fa-comment"></i>
+                <i class="far fa-bookmark"></i>
+              </div>
+            </article>
 
             <article class="feed-media">
               <div class="feed-author">
-                <img src="/assets/ester/avatar.jpeg" alt="" />
+                <img src="/assets/ana/profile.jpeg" alt="" />
                 <div>
-                  <strong>Ester Muniz</strong>
-                  <span>@Esttermuniz</span>
+                  <strong>Ana Camargo</strong>
+                  <span>@anacamargo</span>
                 </div>
               </div>
               <div class="locked-frame">
@@ -156,10 +244,10 @@
 
             <article class="feed-media">
               <div class="feed-author">
-                <img src="/assets/ester/avatar.jpeg" alt="" />
+                <img src="/assets/ana/profile.jpeg" alt="" />
                 <div>
-                  <strong>Ester Muniz</strong>
-                  <span>@Esttermuniz</span>
+                  <strong>Ana Camargo</strong>
+                  <span>@anacamargo</span>
                 </div>
               </div>
               <div class="locked-frame">
@@ -198,7 +286,7 @@
                 <p>Sim. Reembolso de 7 dias sem burocracia. Se não curtir, devolvemos 100%.</p>
               </details>
               <details>
-                <summary class="video-call-question">Como funciona a chamada de vídeo?</summary>
+                <summary>Como funciona a “chamada de vídeo”?</summary>
                 <p>Basta mandar uma mensagem no chat do produtor e combinar.</p>
               </details>
               <details>
@@ -211,12 +299,12 @@
           <button
             class="footer-cta open-checkout"
             type="button"
-            data-plan-id="30d"
-            data-plan-label="1 Mês"
-            data-plan-price="20.93"
+            data-plan-id="xp-rosa"
+            data-plan-label="XP Rosa"
+            data-plan-price="9.99"
           >
             <span>Veja tudo por apenas</span>
-            <strong>R$ 20,93</strong>
+            <strong>R$ 9,99</strong>
             <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </button>
         </section>
@@ -233,28 +321,28 @@
       <div class="modal-card checkout-card" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
         <button class="modal-close" aria-label="Fechar">×</button>
         <div class="checkout-hero">
-          <img src="/assets/ester/cover.jpeg" alt="Ester Muniz" />
+          <img src="/assets/ana/cover.png" alt="Ana Camargo" />
           <div class="checkout-hero-overlay">
             <span class="checkout-secure"><i class="fas fa-lock"></i> Checkout seguro</span>
             <h2 id="checkout-title">Finalize seu acesso</h2>
-            <p>Ester Muniz</p>
+            <p>Ana Camargo</p>
           </div>
         </div>
 
         <div class="checkout-body">
           <div class="checkout-product">
-            <img src="/assets/ester/avatar.jpeg" alt="" />
+            <img src="/assets/ana/profile.jpeg" alt="" />
             <div>
               <span>Assinatura selecionada</span>
-              <strong id="selected-plan-label">15 Dias</strong>
+              <strong id="selected-plan-label">XP Rosa</strong>
             </div>
-            <b id="selected-plan-price">R$ 20,93</b>
+            <b id="selected-plan-price">R$ 9,99</b>
           </div>
 
           <section class="checkout-offer" aria-labelledby="checkout-offer-title">
             <div class="checkout-offer-copy">
               <span class="offer-badge">Oferta exclusiva</span>
-              <h3 id="checkout-offer-title">Adicionar pack completo por + R$ 20,93?</h3>
+              <h3 id="checkout-offer-title">Adicionar pack completo por + R$ 19,90?</h3>
               <p>Acesso estendido com conteudos extras liberados junto com a assinatura.</p>
             </div>
             <div class="checkout-offer-actions" role="group" aria-label="Adicionar oferta ao checkout">
@@ -265,16 +353,16 @@
 
           <div class="checkout-summary" aria-label="Resumo do pedido">
             <div>
-              <span id="summary-plan-label">15 Dias</span>
-              <strong id="summary-plan-price">R$ 20,93</strong>
+              <span id="summary-plan-label">XP Rosa</span>
+              <strong id="summary-plan-price">R$ 9,99</strong>
             </div>
             <div class="summary-offer-row" id="summary-offer-row" hidden>
               <span>Oferta exclusiva</span>
-              <strong id="summary-offer-price">R$ 20,93</strong>
+              <strong id="summary-offer-price">R$ 19,90</strong>
             </div>
             <div class="summary-total">
               <span>Total</span>
-              <strong id="checkout-total-price">R$ 20,93</strong>
+              <strong id="checkout-total-price">R$ 9,99</strong>
             </div>
           </div>
 
@@ -284,7 +372,7 @@
           </div>
 
           <form id="checkout-form" class="checkout-form">
-            <input type="hidden" name="planId" id="selected-plan-id" value="15d" />
+            <input type="hidden" name="planId" id="selected-plan-id" value="xp-rosa" />
             <input type="hidden" name="offerAccepted" id="checkout-offer-accepted" value="false" />
             <label>
               Nome completo
@@ -295,7 +383,7 @@
               <input name="email" type="email" autocomplete="email" required placeholder="voce@email.com" />
             </label>
             <input type="hidden" name="deliveryPreference" value="email" />
-            <button class="button full submit-payment" type="submit">Gerar Pix de R$ 20,93</button>
+            <button class="button full submit-payment" type="submit">Gerar Pix de R$ 9,99</button>
             <p class="form-feedback" id="payment-feedback" role="status"></p>
           </form>
         </div>
@@ -323,19 +411,18 @@
         <button class="modal-close" aria-label="Fechar">X</button>
         <div class="upsell-header">
           <span class="eyebrow">Oferta liberada apos a compra</span>
-          <h2 id="upsell-title">Leve 6 meses por + R$ 20,93</h2>
+          <h2 id="upsell-title">Libere o XP Diamante por R$ 49,99</h2>
           <p>
-            Acabou de finalizar seu acesso inicial. Liberamos um upgrade exclusivo com 6 meses adicionais por
-            apenas mais R$ 20,93.
+            Acabou de finalizar seu acesso inicial. Liberamos o upgrade completo para o XP Diamante por R$ 49,99.
           </p>
         </div>
         <div class="upsell-benefit">
           <strong>Antes:</strong>
-          <span>R$ 87,90</span>
+          <span>XP Rosa</span>
         </div>
         <div class="upsell-benefit highlight">
           <strong>Agora:</strong>
-          <span>+ R$ 20,93</span>
+          <span>XP Diamante • R$ 49,99</span>
         </div>
         <div class="upsell-actions">
           <button class="button full upsell-accept" type="button">Garantir Agora!</button>

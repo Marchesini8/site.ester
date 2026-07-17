@@ -229,8 +229,8 @@ async function sendPurchaseFromOrder(req, order) {
 
   const value = Number(order.item?.price || process.env.PRODUCT_PRICE || 0);
   const eventId = `Purchase.${order.id}`;
-  const productName = order.item?.title || process.env.PRODUCT_NAME || "Acesso Premium Nicolle";
-  const productId = process.env.PRODUCT_ID || "site-18-nicolle-premium";
+  const productName = order.item?.title || process.env.PRODUCT_NAME || "Acesso Premium Ana Camargo";
+  const productId = process.env.PRODUCT_ID || "site-ana-camargo-premium";
 
   return sendEvent(req, {
     event_name: "Purchase",

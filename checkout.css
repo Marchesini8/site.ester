@@ -146,6 +146,41 @@ img {
   padding: 22px;
 }
 
+.checkout-selected-plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 3px 12px;
+  padding: 15px 16px;
+  border: 1px solid #ffc6d8;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fff4f8, #fffaf4);
+  box-shadow: var(--shadow);
+}
+
+.checkout-selected-plan > span {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.checkout-selected-plan strong {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.checkout-selected-plan small {
+  display: none;
+}
+
+.checkout-selected-plan b {
+  color: var(--orange);
+  font-size: 1.04rem;
+}
+
 .section-title {
   display: flex;
   align-items: center;

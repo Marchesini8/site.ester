@@ -223,7 +223,7 @@ video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%;
+  object-position: center 34%;
   filter: saturate(0.95);
 }
 
@@ -265,7 +265,6 @@ video {
   border: 5px solid #fff;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 36%;
   background: #fff;
 }
 
@@ -558,6 +557,20 @@ video {
   color: #0872c6;
 }
 
+.hero-plan[data-plan-id="xp-rosa"] {
+  background: linear-gradient(90deg, #ff6f9f, #ff9fbd);
+}
+
+.plan-option.xp-gold {
+  background: linear-gradient(90deg, #f5a623, #ffd369);
+  color: #3f2a00;
+}
+
+.plan-option.xp-diamond {
+  background: linear-gradient(90deg, #2e8ec2, #78d7ef);
+  color: #082a3b;
+}
+
 .purchase-toast {
   position: absolute;
   top: 16px;
@@ -666,13 +679,10 @@ video {
 
 .content-preview {
   display: grid;
+  gap: 18px;
   max-width: 310px;
   margin: 12px auto 0;
-  padding: 0 16px 8px;
-}
-
-.content-preview .feed-media:nth-of-type(n + 2) {
-  display: none;
+  padding: 0 16px 26px;
 }
 
 .feed-media {
@@ -754,13 +764,13 @@ video {
   bottom: 7px;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   min-height: 22px;
   padding: 0 8px;
   border-radius: 999px;
   background: rgba(34, 36, 44, 0.74);
   color: #fff;
-  font-size: 0.62rem;
+  font-size: 0.64rem;
   font-weight: 900;
   backdrop-filter: blur(8px);
 }
@@ -784,7 +794,7 @@ video {
 
 .faq-section {
   max-width: 760px;
-  margin: 8px auto 28px;
+  margin: 10px auto 46px;
   padding: 0 16px;
 }
 
@@ -861,16 +871,16 @@ video {
   justify-content: center;
   gap: 6px;
   padding: 10px 16px 28px;
-  color: #ff7757;
+  color: var(--orange);
   font-size: 0.85rem;
 }
 
 .footer-legal-links a {
-  color: #ff7757;
+  color: var(--orange);
 }
 
 .footer-legal-links span {
-  color: #ff9a82;
+  color: #f6a071;
 }
 
 .footer-cta {
@@ -880,7 +890,7 @@ video {
   gap: 12px;
   width: min(382px, calc(100vw - 32px));
   min-height: 66px;
-  margin: 30px auto 14px;
+  margin: 34px auto 14px;
   padding: 0 18px;
   border: 0;
   border-radius: 9px;
@@ -888,7 +898,7 @@ video {
   color: #fff;
   box-shadow: 0 14px 32px rgba(255, 90, 31, 0.25);
   cursor: pointer;
-  animation: footerCtaPulse 2.8s ease-in-out infinite;
+  animation: footerCtaPulse 2.2s ease-in-out infinite;
 }
 
 .footer-cta span,
@@ -1516,7 +1526,7 @@ legend {
   }
 
   .cover-photo {
-    object-position: center 40%;
+    object-position: center 28%;
   }
 
   .cover-stats {
@@ -1849,12 +1859,12 @@ legend {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 12px 28px rgba(255, 90, 31, 0.22);
+    box-shadow: 0 14px 32px rgba(255, 90, 31, 0.25);
   }
 
   50% {
-    transform: scale(1.009);
-    box-shadow: 0 16px 34px rgba(255, 90, 31, 0.3);
+    transform: scale(1.018);
+    box-shadow: 0 18px 38px rgba(255, 90, 31, 0.36);
   }
 }
 
@@ -1881,105 +1891,4 @@ legend {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Ester Muniz home refresh */
-:root { --privacy-orange: #ff8a3d; --privacy-pink: #ffa8aa; --privacy-bg: #faf7f4; }
-body { background: var(--privacy-bg); color: #20232b; }
-.site-shell { opacity: 1; visibility: visible; transform: none; }
-.browser-tip { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 78px; padding: 12px 20px; background: #fff; }
-.browser-tip b { color: var(--privacy-orange); font-size: 46px; line-height: 1; }
-.browser-tip span { display: grid; font-size: 14px; }
-.browser-tip strong { color: var(--privacy-orange); font-size: 16px; }
-.browser-tip em { display: inline-flex; align-items: center; justify-content: center; width: 34px; border: 2px solid; border-radius: 14px; font-style: normal; line-height: 16px; }
-.top-logo { min-height: 92px; background: #fbf8f6; }
-.profile-page { max-width: 740px; }
-.profile-card { overflow: hidden; border: 1px solid #e7e3e0; background: #fff; }
-.cover-section { margin: 32px 32px 0; border-radius: 34px 34px 0 0; overflow: visible; }
-.cover-photo { height: 205px; border-radius: 34px 34px 0 0; object-fit: cover; }
-.cover-stats { bottom: -47px; top: auto; right: 24px; left: auto; color: #2f333b; background: transparent; box-shadow: none; font-size: 16px; }
-.profile-head { position: relative; padding: 72px 32px 8px; }
-.avatar { position: absolute; left: 34px; top: -72px; width: 130px; height: 130px; border: 5px solid #fff; }
-.identity h1 { font-size: 30px; }.identity p { font-size: 19px; }
-.bio-block { padding: 6px 32px 22px; }.bio-text { max-height: none; font-size: 18px; }
-.subscriptions { width: auto; margin: 18px 32px 0; padding: 0; border: 0; box-shadow: none; }
-.subscription-offer,.subscription-plans { padding: 28px 24px; border-radius: 24px; background: #fbf7f4; }
-.subscription-offer h2 { margin: 0 0 10px; font-size: 24px; }.offer-timer { margin: 0 0 28px; color: #777; }
-.offer-copy { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 32px; padding: 16px; border-radius: 14px; background: #fff; font-size: 18px; line-height: 1.4; }
-.offer-copy img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
-.discount-label { position: relative; z-index: 1; display: table; margin: 0 0 -10px 56px; padding: 5px 14px; border-radius: 12px; background: #effff2; color: #28b765; }
-.hero-plan,.plan-option { background: linear-gradient(90deg,var(--privacy-orange),#ffc09f,var(--privacy-pink)); color: #111; }
-.hero-plan { min-height: 70px; border-radius: 40px; justify-content: center; font-size: 24px; }.hero-plan strong { font-size: inherit; }
-.original-price { margin: 8px 10px 0 0; text-align: right; }
-.subscription-plans { margin-top: 22px; background: #fff; border: 1px solid #ece6e2; }
-.promo-toggle { font-size: 24px; }.plan-option { min-height: 72px; margin-top: 14px; border-radius: 38px; padding: 0 30px; font-size: 20px; }
-.plan-left { gap: 8px; }.plan-left em { color: inherit; background: transparent; font-size: inherit; font-style: normal; }
-.profile-tabs { margin: 30px 32px 0; min-height: 84px; border: 1px solid #ece6e2; border-radius: 24px; justify-content: space-around; font-size: 19px; }
-.profile-tabs .active { color: var(--privacy-orange); }.profile-tabs b { display: none; }
-.feed-media { margin: 28px 32px; border-radius: 24px; border: 1px solid #eee; overflow: hidden; }
-.feed-author { padding: 22px; }.feed-author img { width: 56px; height: 56px; }.feed-author strong { font-size: 18px; }.feed-author span { font-size: 16px; }
-.faq-section { margin-left: 32px; margin-right: 32px; }
-@media (max-width: 600px) {
-  .browser-tip { min-height: 68px; padding: 8px 14px; gap: 10px; }.browser-tip b { font-size: 36px; }.browser-tip span { font-size: 12px; }.browser-tip strong { font-size: 14px; }
-  .top-logo { min-height: 82px; }.cover-section { margin: 22px 16px 0; }.cover-photo { height: 150px; }.cover-stats { right: 7px; bottom: -42px; gap: 12px; font-size: 12px; }
-  .profile-head { padding: 62px 16px 6px; }.avatar { left: 22px; top: -54px; width: 96px; height: 96px; }.identity h1 { font-size: 25px; }.identity p { font-size: 17px; }
-  .bio-block { padding: 4px 16px 18px; }.bio-text { font-size: 16px; }
-  .subscriptions { margin: 12px 16px 0; }.subscription-offer,.subscription-plans { padding: 22px 16px; border-radius: 20px; }.subscription-offer h2 { font-size: 21px; }.offer-copy { font-size: 15px; padding: 13px; margin-bottom: 28px; }
-  .hero-plan { min-height: 62px; font-size: 20px; }.plan-option { min-height: 64px; padding: 0 20px; font-size: 17px; }.promo-toggle { font-size: 21px; }
-  .profile-tabs { margin: 24px 16px 0; min-height: 72px; font-size: 15px; }.feed-media { margin: 24px 16px; }.faq-section { margin-left: 16px; margin-right: 16px; }
-}
-/* Mantém a pergunta de chamada alinhada com as demais no celular. */
-@media (max-width: 600px) {
-  .faq-list summary.video-call-question {
-    min-height: 44px;
-    padding-top: 0;
-    padding-bottom: 0;
-    font-size: 0.88rem;
-    line-height: 1;
-    white-space: nowrap;
-  }
-}
-/* Botões de assinatura mais compactos, seguindo a proporção da referência. */
-@media (max-width: 600px) {
-  .hero-plan {
-    min-height: 50px;
-    padding: 0 18px;
-    border-radius: 26px;
-    font-size: 18px;
-  }
-
-  .plan-option {
-    min-height: 50px;
-    padding: 0 18px;
-    border-radius: 26px;
-    font-size: 15px;
-  }
-
-  .plan-option + .plan-option {
-    margin-top: 12px;
-  }
-
-  .discount-label {
-    padding: 4px 12px;
-    font-size: 14px;
-  }
-}
-/* Aviso de nova assinatura encaixado ao lado do perfil no celular. */
-@media (max-width: 600px) {
-  .profile-head .purchase-toast {
-    top: 104px;
-    right: 16px;
-    width: 142px;
-    min-height: 42px;
-    padding: 6px 18px 6px 15px;
-    border-width: 1px;
-    border-radius: 8px;
-    gap: 1px 4px;
-    z-index: 20;
-  }
-  .profile-head .purchase-toast::before { left: 7px; width: 5px; height: 5px; }
-  .profile-head .purchase-toast strong { font-size: 0.58rem; }
-  .profile-head .purchase-toast em { padding: 1px 4px; font-size: 0.5rem; }
-  .profile-head .purchase-toast span { font-size: 0.56rem; }
-  .profile-head .toast-close { top: 3px; right: 5px; padding: 0; font-size: 14px; }
 }

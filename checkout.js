@@ -19,31 +19,20 @@ const telegramSuccessClose = document.querySelector(".telegram-success-close");
 const telegramUnlockStorageKey = "telegram_access_unlocked";
 
 const plans = {
-  "15d": {
-    label: "Ester Muniz",
-    period: "15 Dias",
-    originalPrice: 49.9,
-    price: 20.93,
+  "xp-rosa": {
+    label: "XP Rosa 🌸",
+    period: "XP Rosa",
+    price: 9.99,
   },
-  "30d": {
-    label: "30 Dias",
-    period: "30 Dias",
-    price: 20.93,
+  "xp-ouro": {
+    label: "XP Ouro 🥇",
+    period: "XP Ouro",
+    price: 29.99,
   },
-  "3m": {
-    label: "3 Meses",
-    period: "3 Meses",
-    price: 80.73,
-  },
-  "6m": {
-    label: "6 Meses",
-    period: "6 Meses",
-    price: 134.55,
-  },
-  "upsell-6m": {
-    label: "6 Meses",
-    period: "6 Meses",
-    price: 19.9,
+  "xp-diamante": {
+    label: "XP Diamante 💎",
+    period: "XP Diamante",
+    price: 49.99,
   },
 };
 
@@ -51,9 +40,9 @@ let currentOrderId = null;
 let currentTransactionHash = null;
 let pollTimer = null;
 let pixCopyToastTimer = null;
-let selectedPlanId = new URLSearchParams(window.location.search).get("planId") || "30d";
-let selectedPlan = plans[selectedPlanId] || plans["30d"];
-if (!plans[selectedPlanId]) selectedPlanId = "30d";
+let selectedPlanId = new URLSearchParams(window.location.search).get("planId") || "xp-rosa";
+let selectedPlan = plans[selectedPlanId] || plans["xp-rosa"];
+if (!plans[selectedPlanId]) selectedPlanId = "xp-rosa";
 let latestCustomerData = {};
 let addToCartTracked = false;
 const externalIdCookieName = "site18_external_id";
@@ -91,19 +80,19 @@ function getPlanPriceHtml(plan) {
 function getPixelProductParams() {
   const contents = [
     {
-      id: `site-18-nicolle-premium-${selectedPlanId}`,
+      id: `site-ana-camargo-premium-${selectedPlanId}`,
       quantity: 1,
       item_price: selectedPlan.price,
     },
     ...getSelectedAddons().map((addon) => ({
-      id: `site-18-nicolle-${addon.id}`,
+      id: `site-ana-camargo-${addon.id}`,
       quantity: 1,
       item_price: addon.price,
     })),
   ];
 
   return {
-    content_name: `Acesso Premium Nicolle - ${selectedPlan.period}`,
+    content_name: `Acesso Premium Ana Camargo - ${selectedPlan.period}`,
     content_type: "product",
     content_ids: contents.map((item) => item.id),
     contents,

@@ -53,9 +53,9 @@ let latestOrderItem = null;
 let isGeneratingPayment = false;
 let lastPixSignature = "";
 let selectedPlan = {
-  id: "30d",
-  label: "1 Mês",
-  price: 20.93,
+  id: "xp-rosa",
+  label: "XP Rosa",
+  price: 9.99,
 };
 let checkoutOfferAccepted = false;
 let purchaseToastTimer = null;
@@ -272,7 +272,7 @@ const purchaseToastNames = [
   "Firmino",
   "Gregorio",
 ];
-const purchaseToastPlans = ["15 Dias", "30 Dias", "3 Meses", "6 Meses"];
+const purchaseToastPlans = ["XP Rosa", "XP Ouro", "XP Diamante"];
 const purchaseToastTimes = ["ha 2 minutos", "ha 3 minutos", "ha 5 minutos"];
 let purchaseToastIndex = 0;
 
@@ -316,7 +316,7 @@ function getPixelProductParams(plan = selectedPlan) {
   const total = getCheckoutTotal(plan);
   const contents = [
     {
-      id: `site-18-nicolle-premium-${plan.id}`,
+      id: `site-ana-camargo-premium-${plan.id}`,
       quantity: 1,
       item_price: plan.price,
     },
@@ -324,17 +324,17 @@ function getPixelProductParams(plan = selectedPlan) {
 
   if (checkoutOfferAccepted) {
     contents.push({
-      id: `site-18-nicolle-${checkoutOffer.id}`,
+      id: `site-ana-camargo-${checkoutOffer.id}`,
       quantity: 1,
       item_price: checkoutOffer.price,
     });
   }
 
   return {
-    content_name: `Acesso Premium Nicolle - ${plan.label}${checkoutOfferAccepted ? " + Oferta exclusiva" : ""}`,
+    content_name: `Acesso Premium Ana Camargo - ${plan.label}${checkoutOfferAccepted ? " + Oferta exclusiva" : ""}`,
     content_type: "product",
     contents,
-    content_ids: [`site-18-nicolle-premium-${plan.id}`],
+    content_ids: [`site-ana-camargo-premium-${plan.id}`],
     currency: "BRL",
     value: total,
     ...getAttributionEventParams(),
@@ -839,7 +839,7 @@ function showUpsellOffer(order) {
   if (!upsellModal || !order?.id || !order?.isPaid) return;
 
   const planId = order.item?.planId || selectedPlan.id;
-  if (planId !== "15d" || hasShownUpsell(order.id)) return;
+  if (planId !== "xp-rosa" || hasShownUpsell(order.id)) return;
 
   markUpsellShown(order.id);
   upsellModal.classList.add("is-open");
@@ -1039,9 +1039,9 @@ upsellModalCloseButtons.forEach((button) => {
 upsellAcceptButton?.addEventListener("click", () => {
   closeUpsellOffer();
   openCheckout({
-    id: "upsell-6m",
-    label: "6 Meses",
-    price: 19.9,
+    id: "xp-diamante",
+    label: "XP Diamante",
+    price: 49.99,
   }, { fresh: true });
 });
 
@@ -1213,7 +1213,7 @@ checkPaymentButton?.addEventListener("click", () => {
   const countdown = document.querySelector("#offer-countdown");
   if (!countdown) return;
 
-  const storageKey = "ester_offer_deadline";
+  const storageKey = "ana_camargo_offer_deadline";
   const offerDuration = 2 * 60 * 60 * 1000;
   let deadline = 0;
 
