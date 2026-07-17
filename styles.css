@@ -143,7 +143,8 @@ video {
   text-align: left;
 }
 
-.age-copy p {
+.age-copy p,
+.age-card > p {
   margin: 0;
   color: #343b46;
   font-size: 0.88rem;
@@ -374,7 +375,7 @@ video {
 }
 
 .bio-text.expanded {
-  max-height: 360px;
+  max-height: 760px;
   -webkit-mask-image: none;
   mask-image: none;
 }
