@@ -518,7 +518,7 @@ addonInputs.forEach((input) => {
 function updateGeneratePixVisibility() {
   if (!generatePixButton || !checkoutForm) return;
   const identityIsValid = Array.from(checkoutIdentityInputs).every((input) => {
-    if (input === checkoutDocumentInput) return isValidCpf(input.value);
+    if (input === checkoutDocumentInput) return input.value.replace(/\D/g, "").length === 11;
     return Boolean(input.value.trim()) && input.checkValidity();
   });
   generatePixButton.classList.toggle("is-hidden", !identityIsValid);

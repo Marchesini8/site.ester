@@ -272,10 +272,13 @@ video {
 }
 
 .cover-photo {
-  width: 100%;
+  position: relative;
+  left: -53%;
+  width: 155%;
+  max-width: none;
   height: 100%;
   object-fit: cover;
-  object-position: 62% 40%;
+  object-position: center 44%;
   filter: saturate(0.95);
 }
 
@@ -1578,7 +1581,7 @@ legend {
   }
 
   .cover-photo {
-    object-position: 62% 40%;
+    object-position: center 44%;
   }
 
   .cover-stats {
