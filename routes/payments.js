@@ -110,6 +110,22 @@ function toCents(value) {
   return Math.round(Number(value || 0) * 100);
 }
 
+function isValidCpf(value = "") {
+  const digits = String(value).replace(/\D/g, "");
+  if (digits.length !== 11 || /^(\d)\1{10}$/.test(digits)) return false;
+
+  const calculateDigit = (length) => {
+    let sum = 0;
+    for (let index = 0; index < length; index += 1) {
+      sum += Number(digits[index]) * (length + 1 - index);
+    }
+    const remainder = (sum * 10) % 11;
+    return remainder === 10 ? 0 : remainder;
+  };
+
+  return calculateDigit(9) === Number(digits[9]) && calculateDigit(10) === Number(digits[10]);
+}
+
 function getCheckoutRequestKey({ customer, planId }) {
   return [String(customer.email || "").trim().toLowerCase(), planId || "xp-rosa"].join("|");
 }
@@ -120,14 +136,17 @@ router.post("/checkout", async (req, res) => {
     const attribution = sanitizeAttribution(req.body.attribution);
     const tracking = sanitizeTracking(req.body.tracking);
 
-    if (!customer?.name || !customer?.email) {
+    const customerDocument = String(customer?.document || "").replace(/\D/g, "");
+
+    if (!customer?.name || !customer?.email || !isValidCpf(customerDocument)) {
       return res.status(400).json({
-        error: "Informe nome e e-mail para gerar o Pix.",
+        error: "Informe nome, e-mail e um CPF válido para gerar o Pix.",
       });
     }
 
     const normalizedCustomer = {
       ...customer,
+      document: customerDocument,
       phone: customer.phone || process.env.DEFAULT_PHONE_NUMBER || "21999999999",
     };
 

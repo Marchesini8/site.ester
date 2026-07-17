@@ -94,6 +94,18 @@
                 E-mail
                 <input name="email" type="email" autocomplete="email" required placeholder="seu@email.com" />
               </label>
+              <label>
+                CPF
+                <input
+                  name="document"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  required
+                  pattern="[0-9]{11}"
+                  maxlength="11"
+                  placeholder="Digite apenas os 11 números"
+                />
+              </label>
             </section>
 
             <div class="checkout-selected-plan" aria-label="Plano selecionado">

@@ -139,6 +139,7 @@ exports.createPixPayment = async ({ items, customer, delivery, tracking = {} }) 
         offer_hash: offerHash,
         amount: totalInCents,
         payment_method: "pix",
+        installments: 1,
         expire_in_days: expireInDays,
         transaction_origin: "api",
         postback_url: normalizePostbackUrl(process.env.IRONPAY_POSTBACK_URL),

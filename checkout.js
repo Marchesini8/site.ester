@@ -6,7 +6,8 @@ const checkoutTotal = document.querySelector("#checkout-total");
 const addonInputs = document.querySelectorAll('input[name="addons"]');
 const checkoutFeedback = document.querySelector("#checkout-feedback");
 const generatePixButton = document.querySelector(".generate-pix");
-const checkoutIdentityInputs = checkoutForm?.querySelectorAll('input[name="name"], input[name="email"]') || [];
+const checkoutIdentityInputs =
+  checkoutForm?.querySelectorAll('input[name="name"], input[name="email"], input[name="document"]') || [];
 const prePixSafeStrip = document.querySelector(".pre-pix-safe-strip");
 const pixResultPage = document.querySelector("#pix-result-page");
 const checkoutPixQr = document.querySelector("#checkout-pix-qr");
@@ -519,7 +520,28 @@ function updateGeneratePixVisibility() {
   generatePixButton.classList.toggle("is-hidden", !identityIsValid);
 }
 
+function isValidCpf(value = "") {
+  const digits = String(value).replace(/\D/g, "");
+  if (digits.length !== 11 || /^(\d)\1{10}$/.test(digits)) return false;
+
+  const calculateDigit = (length) => {
+    let sum = 0;
+    for (let index = 0; index < length; index += 1) {
+      sum += Number(digits[index]) * (length + 1 - index);
+    }
+    const remainder = (sum * 10) % 11;
+    return remainder === 10 ? 0 : remainder;
+  };
+
+  return calculateDigit(9) === Number(digits[9]) && calculateDigit(10) === Number(digits[10]);
+}
+
 checkoutIdentityInputs.forEach((input) => input.addEventListener("input", updateGeneratePixVisibility));
+checkoutForm?.querySelector('input[name="document"]')?.addEventListener("input", (event) => {
+  event.target.value = event.target.value.replace(/\D/g, "").slice(0, 11);
+  event.target.setCustomValidity(event.target.value && !isValidCpf(event.target.value) ? "Informe um CPF válido." : "");
+  updateGeneratePixVisibility();
+});
 updateGeneratePixVisibility();
 
 checkoutForm?.addEventListener("submit", async (event) => {
@@ -531,6 +553,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
   latestCustomerData = {
     name: payload.name,
     email: payload.email,
+    document: payload.document,
   };
   trackAdEvent("InitiateCheckout", getPixelProductParams(), { customer: latestCustomerData });
   generatePixButton.disabled = true;
@@ -548,6 +571,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
         customer: {
           name: payload.name,
           email: payload.email,
+          document: payload.document,
         },
         deliveryPreference: "email",
         planId: selectedPlanId,
