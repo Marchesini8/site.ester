@@ -8,6 +8,7 @@ const checkoutFeedback = document.querySelector("#checkout-feedback");
 const generatePixButton = document.querySelector(".generate-pix");
 const checkoutIdentityInputs =
   checkoutForm?.querySelectorAll('input[name="name"], input[name="email"], input[name="document"]') || [];
+const checkoutDocumentInput = checkoutForm?.querySelector('input[name="document"]');
 const prePixSafeStrip = document.querySelector(".pre-pix-safe-strip");
 const pixResultPage = document.querySelector("#pix-result-page");
 const checkoutPixQr = document.querySelector("#checkout-pix-qr");
@@ -516,7 +517,10 @@ addonInputs.forEach((input) => {
 
 function updateGeneratePixVisibility() {
   if (!generatePixButton || !checkoutForm) return;
-  const identityIsValid = Array.from(checkoutIdentityInputs).every((input) => input.value.trim() && input.checkValidity());
+  const identityIsValid = Array.from(checkoutIdentityInputs).every((input) => {
+    if (input === checkoutDocumentInput) return isValidCpf(input.value);
+    return Boolean(input.value.trim()) && input.checkValidity();
+  });
   generatePixButton.classList.toggle("is-hidden", !identityIsValid);
 }
 
@@ -536,9 +540,20 @@ function isValidCpf(value = "") {
   return calculateDigit(9) === Number(digits[9]) && calculateDigit(10) === Number(digits[10]);
 }
 
-checkoutIdentityInputs.forEach((input) => input.addEventListener("input", updateGeneratePixVisibility));
-checkoutForm?.querySelector('input[name="document"]')?.addEventListener("input", (event) => {
-  event.target.value = event.target.value.replace(/\D/g, "").slice(0, 11);
+function formatCpf(value = "") {
+  const digits = String(value).replace(/\D/g, "").slice(0, 11);
+  return digits
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+}
+
+Array.from(checkoutIdentityInputs)
+  .filter((input) => input !== checkoutDocumentInput)
+  .forEach((input) => input.addEventListener("input", updateGeneratePixVisibility));
+
+checkoutDocumentInput?.addEventListener("input", (event) => {
+  event.target.value = formatCpf(event.target.value);
   event.target.setCustomValidity(event.target.value && !isValidCpf(event.target.value) ? "Informe um CPF válido." : "");
   updateGeneratePixVisibility();
 });
@@ -549,11 +564,12 @@ checkoutForm?.addEventListener("submit", async (event) => {
 
   const formData = new FormData(checkoutForm);
   const payload = Object.fromEntries(formData.entries());
+  const documentDigits = String(payload.document || "").replace(/\D/g, "");
   const addons = getSelectedAddons().map((addon) => addon.id);
   latestCustomerData = {
     name: payload.name,
     email: payload.email,
-    document: payload.document,
+    document: documentDigits,
   };
   trackAdEvent("InitiateCheckout", getPixelProductParams(), { customer: latestCustomerData });
   generatePixButton.disabled = true;
@@ -571,7 +587,7 @@ checkoutForm?.addEventListener("submit", async (event) => {
         customer: {
           name: payload.name,
           email: payload.email,
-          document: payload.document,
+          document: documentDigits,
         },
         deliveryPreference: "email",
         planId: selectedPlanId,
